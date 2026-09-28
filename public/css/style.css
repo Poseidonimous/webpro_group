@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+}
+
+.login_main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 255, 255);
+
+    background-image: url('/image/login_bg.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    background-repeat: no-repeat;
+}
+
+.login_main h1 {
+    font-size: clamp(1.25rem, 3.5vw + 1rem, 3rem);
+    font-weight: bolder;
+    text-align: center;
+}
+
+.form {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5%;
+    border-radius: 15px;
+}
+
+.div_input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1%;
+    margin-bottom: 0.5%;
+}
+
+.div_input label {
+    font-size: clamp(0.75rem, 1.5vw + 0.5rem, 1.2rem);
+    font-weight: lighter;
+    margin-left: 1%;
+}
+
+.div_input input {
+    width: clamp(80px, 70vw, 525px);
+    height: clamp(25px, 70vw, 50px);
+
+    padding: 0 16px;
+    border-radius: 10px;
+
+    transition: transform 0.4s ease-in-out;
+    
+    font-size: clamp(0.75rem, 1.5vw + 0.5rem, 1.2rem);
+}
+
+.div_input input:hover,
+.div_input input:focus {
+    transform: scale(1.02);
+}
+
+.regis_div {
+    margin-left: 1%;
+    font-size: clamp(0.75rem, 1vw + 0.5rem, 1rem);
+}
+
+.regis_div a {
+    text-decoration: none;
+    color: #76C1FF;
+    transition: all 0.2s ease-in-out;
+}
+
+.regis_div a:hover{
+    color: #2776b7;
+}
+.login_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+
+    transition: all 0.4s ease-in-out;
+}
+
+.login_button button {
+    background-color: #2F87CF;
+    padding: 2%;
+    padding-left: 4%;
+    padding-right: 4%;
+    border-radius: 7px;
+    border-color: #2F87CF;
+    color: #FFFBFB;
+
+    font-size: clamp(0.875rem, 1.5vw + 0.5rem, 1.4rem);
+    text-align: center;
+}
+
+.login_button:hover {
+    transform: scale(1.05);
+}

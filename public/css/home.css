@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+}
+
+nav{
+    background-color: #383838;
+    padding: 15px;
+}
+
+nav a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.middle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.head{
+    display: flex;
+    flex-direction: column;
+    color: #5B5B5B;
+    font-size: 28px;
+    gap: 0px;
+
+    justify-content: centers;
+    align-items: center;
+
+    margin-top: 2%;
+}
+
+.time{
+    font-size: 48px;
+    font-weight: 500;
+}
+
+.name{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.name p{
+    font-size: 68px;
+    font-weight: 600;
+}
+
+.card_div{
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+}
+
+.card div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    text-decoration: none;
+    color: #5B5B5B;
+    background-color: #383838;
+}
+
+.card img{
+    width: 200px;
+    height: auto;
+    justify-content: center;
+}
