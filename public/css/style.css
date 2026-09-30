@@ -177,14 +177,62 @@ input, button {
     color: rgb(222, 222, 222);
 }
 
+/* ==========================================
+   1. ตัวหุ้มสร้างเส้นขอบดำพิกเซล (Pixel Outer Border)
+   ========================================== */
+.form-wrapper {
+    display: inline-block;
+    width: 100%;
+    max-width: 540px;
+    
+    /* สร้างเส้นขอบดำขนาด 4px ล้อมรอบทรงพิกเซล */
+    filter: 
+        drop-shadow(4px 0 0 #000) 
+        drop-shadow(-4px 0 0 #000) 
+        drop-shadow(0 4px 0 #000) 
+        drop-shadow(0 -4px 0 #000);
+}
+
 /* --- กล่องฟอร์ม --- */
 .form {
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(2px); /* ช่วยเบลอวิดีโอ/ภาพหลังกล่องให้อ่านง่ายขึ้น */
     padding: 32px 50px;
-    border-radius: 15px;
-    width: 90%;
+    border-radius: 0 !important;
+    width: 100%;
     max-width: 540px; /* คุมไม่ให้กล่องขยายกว้างเกินไปบนจอคอม */
+
+    clip-path: polygon(
+        /* มุมบน-ซ้าย */
+        0 12px, 
+        4px 12px, 4px 8px, 8px 8px, 8px 4px, 12px 4px, 12px 0,
+        /* มุมบน-ขวา */
+        calc(100% - 12px) 0, 
+        calc(100% - 12px) 4px, calc(100% - 8px) 4px, calc(100% - 8px) 8px, calc(100% - 4px) 8px, calc(100% - 4px) 12px, 100% 12px,
+        /* มุมล่าง-ขวา */
+        100% calc(100% - 12px), 
+        calc(100% - 4px) calc(100% - 12px), calc(100% - 4px) calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) calc(100% - 4px), calc(100% - 12px) calc(100% - 4px), calc(100% - 12px) 100%,
+        /* มุมล่าง-ซ้าย */
+        12px 100%, 
+        12px calc(100% - 4px), 8px calc(100% - 4px), 8px calc(100% - 8px), 4px calc(100% - 8px), 4px calc(100% - 12px), 0 calc(100% - 12px)
+    );
+}
+
+/* ==========================================
+   3. ช่อง Input และ ปุ่มกด แบบโค้งพิกเซลขนาดเล็ก
+   ========================================== */
+.form input,
+.login_button button {
+    border-radius: 0 !important;
+    border: none !important;
+    
+    /* ตัดมุมพิกเซลขนาดเล็ก (รอยตัด 4px) */
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
 }
 
 .div_input {
