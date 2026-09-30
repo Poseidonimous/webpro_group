@@ -24,10 +24,6 @@ app.get("/login", (req, res) => {
   res.render('customer_login');
 });
 
-app.get("/login2", (req, res) => {
-  res.render('sec_login');
-});
-
 app.post("/login", (req,res)=>{
     res.redirect('/');
 });

@@ -8,7 +8,7 @@
 </head>
 <body>
     <video autoplay loop muted playsinline id="bg-video">
-        <source src="/video/minecraft_login.mp4" type="video/mp4">
+        <source src="/video/minecraft_login_cp.mp4" type="video/mp4">
     </video>
 
     <main class="login_main">
@@ -37,6 +37,15 @@
 
         </form>
     </main>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
