@@ -10,6 +10,12 @@ body {
     font-family: 'Prompt', sans-serif;
 }
 
+/* body {
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                url('path-to-your-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+} */
+
 nav{
     background-color: #383838;
     padding: 15px;
@@ -59,7 +65,11 @@ nav a{
 .card_div{
     display: flex;
     flex-direction: row;
-    gap: 5%;
+    gap: 80px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
 }
 
 .card div{
@@ -67,16 +77,55 @@ nav a{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    min-width: 250px;
+    min-height: 250px;
 }
 
 .card{
+    display: block;
     text-decoration: none;
     color: #5B5B5B;
-    background-color: #383838;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 10px 10px 25px 10px rgba(0, 0, 0, 0.316);
+
+    font-size: 24px;
+
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
 }
 
 .card img{
-    width: 200px;
-    height: auto;
-    justify-content: center;
+    width: 225px;
+    height: 225px;
+    opacity: 70%;
+
+    transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 1000px) {
+    .card_div{
+        flex-direction: column;
+    }
+
+    .card div{
+        min-width: none;
+        min-height: none;
+    }
+
+    .card img{
+        width: clamp(200px, 40vw, 350px);
+        height: clamp(200px, 40vw, 350px);
+    }
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 10px 15px 30px 10px #4191D3;
+}
+
+.card img:hover {
+    opacity: 0.9;
+    filter: invert(53%) sepia(87%) saturate(464%) hue-rotate(167deg) brightness(85%) contrast(88%);
 }

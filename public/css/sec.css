@@ -1,0 +1,292 @@
+:root {
+    /* --- Greens --- */
+    --mc-grass-green: #577E35;
+    --mc-dark-green: #3B5323;
+    --mc-lime-green: #70B237;
+    --mc-moss-green: #4A5D23;
+    --mc-emerald-green: #17DD62;
+    --mc-slime-green: #8CD249;
+
+    /* --- Browns & Woods --- */
+    --mc-dirt-brown: #513720;
+    --mc-coarse-dirt: #77553B;
+    --mc-oak-wood: #A07248;
+    --mc-spruce-wood: #684E32;
+    --mc-birch-wood: #D7C185;
+    --mc-dark-oak: #3C2712;
+    --mc-acacia-wood: #AD5D32;
+    --mc-jungle-wood: #B8815B;
+    --mc-mangrove-wood: #762B2A;
+    --mc-cherry-pink: #E39DAE;
+
+    /* --- Stones & Grays --- */
+    --mc-stone-gray: #737373;
+    --mc-cobblestone-gray: #5A5A5A;
+    --mc-andesite-gray: #88888B;
+    --mc-deepslate-dark: #363639;
+    --mc-bedrock-black: #242424;
+    --mc-obsidian-purple: #1A1625;
+
+    /* --- Ores & Minerals --- */
+    --mc-diamond-cyan: #4AEDD9;
+    --mc-gold-yellow: #FCA800;
+    --mc-iron-gray: #D8D8D8;
+    --mc-redstone-red: #E62E2E;
+    --mc-lapis-blue: #1855B5;
+    --mc-amethyst-purple: #8A66D3;
+    --mc-copper-orange: #C66E50;
+    --mc-netherite-dark: #4C4143;
+
+    /* --- Nether, End & Elements --- */
+    --mc-netherrack-red: #6F3636;
+    --mc-soul-sand-brown: #493A32;
+    --mc-glowstone-yellow: #FFBC5B;
+    --mc-lava-orange: #D85311;
+    --mc-water-blue: #3F76E4;
+    --mc-quartz-white: #EAE5DE;
+    --mc-endstone-yellow: #DFE1A6;
+    --mc-portal-purple: #4A0E4E;
+
+    /* --- UI & Neutrals --- */
+    --mc-gui-light-gray: #C6C6C6;
+    --mc-gui-dark-gray: #373737;
+    --mc-gui-slot-gray: #8B8B8B;
+    --mc-shadow-black: rgba(0, 0, 0, 0.6);
+    --mc-pure-white: #FFFFFF;
+    --mc-pure-black: #000000;
+
+    /* --- Sculk, Ancient & Deep Dark --- */
+    --mc-sculk-dark: #09181E;
+    --mc-sculk-cyan: #00A3A8;
+    --mc-sculk-teal: #005B60;
+    --mc-sculk-vein: #198083;
+    --mc-echo-shard: #006F80;
+    --mc-warden-blue: #0F3C46;
+
+    /* --- Pale Garden & New Woods --- */
+    --mc-pale-oak-wood: #E0D9CE;
+    --mc-pale-moss-green: #909E83;
+    --mc-pale-bark-gray: #6B635A;
+    --mc-creaking-orange: #E66C15;
+
+    /* --- Copper States (ระดับสนิมทองแดง) --- */
+    --mc-copper-block: #C66E50;
+    --mc-exposed-copper: #A2806D;
+    --mc-weathered-copper: #5A9C86;
+    --mc-oxidized-copper: #43A387;
+
+    /* --- Ocean, Prismarine & Underwater --- */
+    --mc-prismarine-teal: #5BA89D;
+    --mc-prismarine-dark: #33534B;
+    --mc-prismarine-brick: #63988E;
+    --mc-sea-lantern-cyan: #9DCFC4;
+    --mc-sea-foam-white: #E4F6F3;
+    --mc-conduit-blue: #61C5D0;
+
+    /* --- Nether Warped & Crimson Woods --- */
+    --mc-crimson-stem-red: #7B2333;
+    --mc-crimson-hyphae: #5C1926;
+    --mc-warped-stem-teal: #2B686B;
+    --mc-warped-nylium: #167E7D;
+    --mc-shroomlight-orange: #F69140;
+
+    /* --- Magic, Enchanting & Special Items --- */
+    --mc-enchant-purple: #4F265D;
+    --mc-enchant-glow: #9955FF;
+    --mc-totem-gold: #E0B33A;
+    --mc-dragon-egg-black: #120B16;
+    --mc-nether-star-cyan: #E0FFFF;
+    --mc-beacon-sky-blue: #A2DDF1;
+
+    /* --- HUD, Status Effects & UI Elements --- */
+    --mc-heart-red: #FF1111;
+    --mc-hardcore-heart: #990000;
+    --mc-wither-heart-black: #211B1B;
+    --mc-poison-heart-green: #40A000;
+    --mc-absorption-gold: #FFD700;
+    --mc-hunger-drumstick: #80562D;
+    --mc-armor-icon-gray: #9DA0A8;
+    --mc-xp-bar-green: #80FF20;
+    --mc-tooltip-bg: #100010;
+    --mc-tooltip-border: #2B0B5A;
+
+    /* --- Dyes, Concrete & Blocks --- */
+    --mc-honey-yellow: #EB9B09;
+    --mc-sponge-yellow: #C3C340;
+    --mc-terracotta-brown: #985E43;
+    --mc-pink-wool: #ED8DAC;
+    --mc-magenta-wool: #BD3BBE;
+    --mc-purple-wool: #7A2AAC;
+    --mc-cyan-wool: #158991;
+    --mc-light-blue-wool: #3AB3DA;
+    --mc-froglight-green: #A7E39D;
+    --mc-froglight-pink: #E5C2D5;
+}
+
+@font-face {
+    font-family: 'iannnnnAMD';
+    src: url('/fonts/iannnnnAMD.ttf') format('truetype');
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'iannnnnAMD', sans-serif;
+    /* บังคับปิดการเกลี่ยขอบตัวอักษรเพื่อรักษาความคมของ Pixel */
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+}
+
+input, button {
+    font-family: 'iannnnnAMD', sans-serif;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+}
+
+#bg-video {
+    position: fixed; /* ให้อยู่กับที่เวลาเลื่อนหน้าจอ */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* บังคับให้วิดีโอขยายเต็มจอโดยไม่เสียสัดส่วน */
+    z-index: -1; /* ดันไปอยู่เลเยอร์หลังสุด */
+    opacity: 0.93; /* ปรับให้วิดีโอมืดลงนิดหน่อยได้ */
+}
+
+.login_main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(182, 182, 182);
+}
+
+/* --- หัวข้อใหญ่ --- */
+.login_main h1 {
+    font-size: 46px; /* ขนาดเต็มพิกเซลสำหรับมือถือ */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 16px;
+    color: rgb(222, 222, 222);
+}
+
+/* --- กล่องฟอร์ม --- */
+.form {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px); /* ช่วยเบลอวิดีโอ/ภาพหลังกล่องให้อ่านง่ายขึ้น */
+    padding: 32px 50px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 540px; /* คุมไม่ให้กล่องขยายกว้างเกินไปบนจอคอม */
+}
+
+.div_input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.div_input label {
+    font-size: 24px;
+    margin-left: 2px;
+    margin-bottom: 6px;
+}
+
+.div_input input {
+    width: 100%;
+    height: 44px; /* กำหนดความสูงคงที่แทน clamp */
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 24px;
+    transition: transform 0.2s ease-in-out;
+    background-color: rgb(238, 238, 238);
+    color: #333333;
+}
+
+.div_input input:hover,
+.div_input input:focus {
+    transform: scale(1.02);
+    outline: none;
+}
+
+.regis_div {
+    margin-left: 2px;
+    margin-top: 6px;
+    font-size: 20px;
+}
+
+.regis_div a {
+    text-decoration: none;
+    color: var(--mc-honey-yellow);
+    transition: color 0.2s ease-in-out;
+}
+
+.regis_div a:hover {
+    color: var(--mc-redstone-red);
+}
+
+/* --- ปุ่มเข้าสู่ระบบ --- */
+.login_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.login_button button {
+    width: 100%;
+    height: 48px;
+    background-color: var(--mc-lime-green);
+    border: none;
+    border-radius: 8px;
+    color: #2e2e2e;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out, background-color 0.5s ease-in-out, color 0.4s ease-in-out;
+}
+
+.login_button button:hover {
+    transform: scale(1.02);
+    background-color: var(--mc-dark-green);
+    color: #d9d9d9;
+}
+
+/* --- ปรับขนาดฟอนต์ให้ใหญ่ขึ้นเมื่อเปิดบนจอคอมพิวเตอร์ (768px ขึ้นไป) --- */
+@media screen and (min-width: 768px) {
+    .login_main h1 {
+        font-size: 82px;
+    }
+
+    .div_input label {
+        font-size: 36px;
+    }
+
+    .div_input input {
+        font-size: 36px;
+        height: 48px;
+    }
+
+    .regis_div {
+        font-size: 28px;
+    }
+
+    .login_button button {
+        font-size: 36px;
+    }
+
+    .form{
+        padding: 40px 65px;
+        max-width: 600px;
+    }
+}
