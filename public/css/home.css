@@ -175,6 +175,7 @@ nav a{
     text-decoration: none;
     font-size: 32px;
     transition: color 0.265s ease-in-out;
+    padding-left: 5px;
 }
 
 nav a:hover {
@@ -318,21 +319,21 @@ nav a:hover {
     padding: 6px 10px;
 
     /* สีพื้นหลังสีม่วงดำสไตล์ Minecraft Tooltip */
-    background-color: rgba(16, 0, 24, 0.92);
+    background-color: rgba(75, 75, 75, 0.92);
     color: #FFFFFF;         /* หรือเปลี่ยนเป็น #FFFF55 ถ้าอยากได้สีเหลืองสไตล์ไอเทมแรร์ */
     
     font-size: 28px;
     font-family: 'iannnnnAMD', sans-serif; /* ใช้ฟอนต์พิกเซลในโครงการ */
     
     /* สร้างขอบสีม่วง/น้ำเงินเรืองแสงแบบในเกม */
-    border: 2px solid var(--mc-enchant-purple);
+    border: 2px solid var(--mc-bedrock-black);
     box-shadow: 
-        inset 2px 2px 0px #5000ff,
-        inset -2px -2px 0px #280070,
+        inset 2px 2px 0px #444444,
+        inset -2px -2px 0px #2f2f2f,
         0 4px 10px rgba(0, 0, 0, 0.7);
 
     /* เงาตัวหนังสือสไตล์ Minecraft */
-    text-shadow: 2px 2px 0px #100010;
+    text-shadow: 2px 2px 0px #1c1c1c;
 
     transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out, visibility 0.35s ease-in-out;
 }
@@ -346,7 +347,7 @@ nav a:hover {
     transform: translateX(-50%);
     border-width: 5px;
     border-style: solid;
-    border-color: var(--mc-portal-purple) transparent transparent transparent;
+    border-color: var(--mc-bedrock-black) transparent transparent transparent;
 }
 
 /* ==========================================

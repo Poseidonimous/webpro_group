@@ -45,7 +45,7 @@ app.get("/order", (req, res) => {
 });
 
 app.get("/buy_time", (req, res) => {
-  res.render('customer_home');
+  res.render('customer_buytime');
 });
 
 app.get("/history", (req, res) => {
