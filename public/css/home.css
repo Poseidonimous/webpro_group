@@ -166,13 +166,19 @@ input, button {
 } */
 
 nav{
-    background-color: #383838;
+    background-color: rgba(0, 0, 0, 0.4);
     padding: 15px;
 }
 
 nav a{
     color: #ffffff;
     text-decoration: none;
+    font-size: 32px;
+    transition: color 0.265s ease-in-out;
+}
+
+nav a:hover {
+    color: var(--mc-redstone-red);
 }
 
 .middle{
@@ -185,8 +191,6 @@ nav a{
 .head{
     display: flex;
     flex-direction: column;
-    color: #5B5B5B;
-    font-size: 28px;
     gap: 0px;
 
     justify-content: centers;
@@ -195,8 +199,19 @@ nav a{
     margin-top: 2%;
 }
 
-.time{
+.head {
+    color: #ececec;
+    text-shadow: 
+        3px 0px 0 rgb(69, 69, 69),
+        1px 3px 0 rgb(69, 69, 69);
+}
+
+.remain {
     font-size: 48px;
+}
+
+.time{
+    font-size: 96px;
     font-weight: 500;
 }
 
@@ -206,75 +221,139 @@ nav a{
     gap: 16px;
 }
 
+.user_name{
+    color: var(--mc-light-blue-wool);
+}
+
 .name p{
-    font-size: 68px;
+    font-size: 82px;
     font-weight: 600;
 }
 
 .card_div{
     display: flex;
     flex-direction: row;
-    gap: 80px;
+    gap: 70px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 200px;
+    margin-top: 285px;
+    width: 100%;
 }
 
-.card div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.card_box{
+    display: inline-block;
+    position: relative;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 
-    min-width: 250px;
-    min-height: 250px;
+    width: 135px;
+    height: 135px;
+    aspect-ratio: 1 / 1; /* ล็อกสัดส่วนไม่ให้ยืดเสียทรง */
+}
+
+.frame-bg {
+    display: block;   /* ลบช่องว่างด้านล่างรูป */
+    width: 100%;  /* ให้ตอบสนอง */
+    height: 100%;
+    object-fit: fill;
+
+    z-index: 1;
+    filter: brightness(0.82);
+}
+
+.frame-icon {
+    position: absolute; /* สำคัญ: ถอดภาพออกจากลำดับการวางปกติและซ้อนทับภาพอื่น */
+    
+    /* จัดให้อยู่กึ่งกลางเป๊ะ */
+    transform: translate(-50%, -50%); /* เลื่อนตัวเองกลับมาครึ่งหนึ่งของขนาดตัวเองเพื่อให้จุดศูนย์กลางตรงกัน */
+    
+    /* เพื่อให้ภาพไอคอนคงความคมชัดแบบพิกเซล */
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    object-fit: contain;
+    z-index: 2;
 }
 
 .card{
     display: block;
     text-decoration: none;
-    color: #5B5B5B;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 15px;
-    box-shadow: 10px 10px 25px 10px rgba(0, 0, 0, 0.316);
-
-    font-size: 24px;
-
-    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.3);
+    transition: transform 0.45s ease-in-out;
 }
 
-.card img{
-    width: 225px;
-    height: 225px;
-    opacity: 70%;
-
-    transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
+.card:hover {
+    transform: scale(1.05);
 }
 
 @media screen and (max-width: 1000px) {
     .card_div{
         flex-direction: column;
+        margin-top: 100px;
+        gap: 35px;
     }
 
-    .card div{
-        min-width: none;
-        min-height: none;
-    }
-
-    .card img{
-        width: clamp(200px, 40vw, 350px);
-        height: clamp(200px, 40vw, 350px);
+    .card_box{
+        width: clamp(150px, 30vw, 220px);
+        height: clamp(150px, 30vw, 220px);
     }
 }
 
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 10px 15px 30px 10px #4191D3;
+/* ==========================================
+   Minecraft Style Tooltip
+   ========================================== */
+.mc-tooltip {
+    /* ซ่อนกล่องไว้เป็นค่าเริ่มต้น */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* ไม่ให้กล่องบังเมาส์ */
+
+    position: absolute;
+    bottom: 100%;           /* ลอยขึ้นไปอยู่เหนือกล่องไอเทม */
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    z-index: 100;           /* อยู่ชั้นบนสุดเสมอ */
+
+    white-space: nowrap;    /* บังคับบรรทัดเดียวไม่ให้ข้อความตกบรรทัด */
+    padding: 6px 10px;
+
+    /* สีพื้นหลังสีม่วงดำสไตล์ Minecraft Tooltip */
+    background-color: rgba(16, 0, 24, 0.92);
+    color: #FFFFFF;         /* หรือเปลี่ยนเป็น #FFFF55 ถ้าอยากได้สีเหลืองสไตล์ไอเทมแรร์ */
+    
+    font-size: 28px;
+    font-family: 'iannnnnAMD', sans-serif; /* ใช้ฟอนต์พิกเซลในโครงการ */
+    
+    /* สร้างขอบสีม่วง/น้ำเงินเรืองแสงแบบในเกม */
+    border: 2px solid var(--mc-enchant-purple);
+    box-shadow: 
+        inset 2px 2px 0px #5000ff,
+        inset -2px -2px 0px #280070,
+        0 4px 10px rgba(0, 0, 0, 0.7);
+
+    /* เงาตัวหนังสือสไตล์ Minecraft */
+    text-shadow: 2px 2px 0px #100010;
+
+    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out, visibility 0.35s ease-in-out;
 }
 
-.card img:hover {
-    opacity: 0.9;
-    filter: invert(53%) sepia(87%) saturate(464%) hue-rotate(167deg) brightness(85%) contrast(88%);
+/* สามเหลี่ยมชี้ลงขนาดพิกเซลใต้กล่อง (Optional) */
+.mc-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--mc-portal-purple) transparent transparent transparent;
+}
+
+/* ==========================================
+   แสดงผลเมื่อเอาเมาส์ชี้ที่ .card
+   ========================================== */
+.card:hover .mc-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); /* ขยับขึ้นนุ่มนวลนิดๆ */
 }

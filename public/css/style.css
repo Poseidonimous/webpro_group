@@ -175,6 +175,10 @@ input, button {
     text-align: center;
     margin-bottom: 16px;
     color: rgb(222, 222, 222);
+
+    text-shadow: 
+        3px 0px 0 rgb(69, 69, 69),
+        1px 3px 0 rgb(69, 69, 69);
 }
 
 /* ==========================================
