@@ -48,6 +48,10 @@ app.get("/buy_time", (req, res) => {
   res.render('customer_buytime');
 });
 
+app.get("/payment", (req,res)=>{
+  res.render('payment')
+});
+
 app.get("/history", (req, res) => {
   res.render('customer_home');
 });
