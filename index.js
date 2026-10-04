@@ -41,7 +41,7 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/order", (req, res) => {
-  res.render('customer_home');
+  res.render('menu');
 });
 
 app.get("/buy_time", (req, res) => {

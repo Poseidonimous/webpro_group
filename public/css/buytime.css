@@ -221,7 +221,7 @@ nav a:hover {
 }
 
 .package_card_wrapper {
-    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.6));
     display: inline-block;
 }
 

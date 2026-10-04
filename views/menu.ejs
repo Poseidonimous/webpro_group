@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Drink & Food</title>
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="icon" type="image/png" href="/image/icon.png">
+</head>
+<body>
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="/video/minecraft_picnic_cp.mp4" type="video/mp4">
+    </video>
+    <main>
+        <nav><a href="/home">หน้าหลัก</a></nav>
+        <div class="outter_div">
+            <div class="warpper">
+                <div class="catelog_div">
+                    <div class="title">
+                        <p>หมวดหมู่</p>
+                        <div class="line"></div>
+                    </div>
+                    <form action="/category" method="get">
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="all" id="all" checked>
+                                <p>ทั้งหมด</p>
+                            </label>
+                        </div>
+                        
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="chips" id="chips">
+                                <p>ขนม</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="drink" id="drink">
+                                <p>เครื่องดื่ม</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="snack" id="snack">
+                                <p>ของทานเล่น</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="meal" id="meal">
+                                <p>อาหาร</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="desert" id="desert">
+                                <p>ของหวาน</p>
+                            </label>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            
+            <div class="big_warpper">
+                <div class="menu_div">
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
