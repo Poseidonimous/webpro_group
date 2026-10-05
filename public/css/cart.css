@@ -270,18 +270,18 @@ thead th:last-child {
 
 .top th:nth-child(1) {
     text-align: start;
-    width: 45%;
+    width: 40%;
     padding-left: 16px;
 }
 
 .top th:nth-child(2) {
-    text-align: end;
+    text-align: center;
     width: 15%;
 }
 
 .top th:nth-child(3) {
     text-align: center;
-    width: 15%;
+    width: 20%;
 }
 
 .top th:nth-child(4) {
@@ -298,19 +298,19 @@ thead th:last-child {
 
 .top td:nth-child(1) {
     text-align: start;
-    width: 45%;
+    width: 40%;
     padding-left: 16px;
 }
 
 .top td:nth-child(2) {
-    text-align: end;
+    text-align: center;
     width: 15%;
-    padding-right: 10px;
+    padding-left: 35px;
 }
 
 .top td:nth-child(3) {
     text-align: center;
-    width: 15%;
+    width: 20%;
 }
 
 .top td:nth-child(4) {
@@ -458,6 +458,60 @@ thead th:last-child {
 .btn button:hover {
     color: var(--mc-totem-gold);
     transform: translateY(-4px);
+}
+
+/* จัดให้อยู่กึ่งกลางคอลัมน์ */
+.qty-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* ตัวเลขแสดงจำนวนสินค้า */
+.qty-val {
+    font-size: 28px;
+    min-width: 30px;
+    text-align: center;
+    color: #333333;
+}
+
+/* ปุ่มพิกเซล + และ - */
+.qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #e3970ae0;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+
+    /* ตัดมุมพิกเซลขนาดเล็ก */
+    clip-path: polygon(
+        0 2px, 2px 2px, 2px 0,
+        calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+        100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%,
+        2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+    );
+}
+
+/* สภาวะเมื่อเอาเมาส์ชี้ */
+.qty-btn:hover {
+    background-color: #f6a716;
+    transform: scale(1.1);
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+/* สภาวะเมื่อกดคลิก ให้กดบุ๋มลงไปเล็กน้อย */
+.qty-btn:active {
+    transform: scale(0.95) translateY(1px);
+    background-color: #b47e1a;
 }
 
 @media screen and (max-width:715px) {

@@ -74,6 +74,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="div_cart">
+                <a href="/cart">
+                    <img src="/image/chest.png" 
+                        data-static="/image/chest.png" 
+                        data-gif="/image/chest.gif" 
+                        alt="chest" 
+                        class="chest_img">
+                    <button>ตะกร้า (2)</button>
+                </a>
+            </div>
             
         </div>
     </main>
@@ -85,6 +96,35 @@
                     console.log("Autoplay was prevented, retrying...", error);
                 });
             }
+        });
+
+        const cartLink = document.querySelector('.div_cart a');
+        const chestImg = document.querySelector('.chest_img');
+
+        // 1. ระบุความยาวรวมของ GIF 1 รอบ (ปรับตัวเลขตรงนี้เป็นมิลลิวินาทีตามไฟล์จริงของคุณ)
+        // เช่น ถ้า GIF ยาว 1.2 วินาที ให้ใส่ 1200
+        const GIF_DURATION = 4100; 
+
+        let startTime = 0;
+        let delayTimer;
+
+        // ตอนเอาเมาส์ชี้ (Hover)
+        cartLink.addEventListener('mouseenter', () => {
+            clearTimeout(delayTimer); // เคลียร์ตัวจับเวลาเดิม
+            startTime = Date.now();   // บันทึกเวลาที่เริ่มเอาเมาส์ชี้
+            chestImg.src = chestImg.dataset.gif;
+        });
+
+        // ตอนเอาเมาส์ออก (Unhover)
+        cartLink.addEventListener('mouseleave', () => {
+            const elapsedTime = Date.now() - startTime;          // เวลาทั้งหมดที่เล่นไป
+            const currentLoopTime = elapsedTime % GIF_DURATION;  // ตำแหน่งเวลาในรอบปัจจุบัน
+            const remainingTime = GIF_DURATION - currentLoopTime; // เวลาที่เหลือกว่าจะจบครบรอบนี้
+
+            // สั่งให้รอจนจบครบรอบนั้นพอดี แล้วค่อยเปลี่ยนกลับเป็น PNG
+            delayTimer = setTimeout(() => {
+                chestImg.src = chestImg.dataset.static;
+            }, remainingTime);
         });
     </script>
 </body>

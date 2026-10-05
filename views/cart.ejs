@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="icon" type="image/png" href="/image/icon.png">
+</head>
+<body>
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="/video/minecraft_ocean_cp.mp4" type="video/mp4">
+    </video>
+    <main>
+        <nav><a href="/order">ย้อนกลับ</a></nav>
+        <div class="main_div">
+            <div class="package_card_wrapper">
+                <div class="top">
+                    <div class="inside">
+                        <p class="title">สรุปรายการสั่งซื้อ</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>สินค้า</th>
+                                    <th>ราคา/ชิ้น</th>
+                                    <th>ปริมาณ</th>
+                                    <th>รวม</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Test</td>
+                                    <td>Test</td>
+                                    <td>
+                                        <div class="qty-control">
+                                            <button type="button" class="qty-btn">-</button>
+                                            <span class="qty-val">1</span>
+                                            <button type="button" class="qty-btn">+</button>
+                                        </div>
+                                    </td>
+                                    <td>Test</td>
+                                </tr>
+                                <tr>
+                                    <td>Test</td>
+                                    <td>Test</td>
+                                    <td>
+                                        <div class="qty-control">
+                                            <button type="button" class="qty-btn">-</button>
+                                            <span class="qty-val">1</span>
+                                            <button type="button" class="qty-btn">+</button>
+                                        </div>
+                                    </td>
+                                    <td>Test</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="line"></div>
+                        <div class="total">
+                            <p class="title">ยอดรวม</p>
+                            <p class="price">55.00 บาท</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="package_card_wrapper">
+                <div class="bottom">
+                    <div class="inside">
+                        <p class="title">เลือกช่องทางการจ่ายเงิน</p>
+                        <div class="pay_method">
+                            <form action="/payment" medthod="post">
+                                <div class="medthod_warpper">
+                                    <label class="method">
+                                        <input type="radio" name="payment_method" value="promptpay" id="prompt-pay" checked>
+                                        <div class="card_box">
+                                            <img src="/image/itemslot_1_1.png" alt="item_slot" class="frame-bg">
+                                            <img src="/image/Diamond.png" alt="Diamond" class="frame-icon" style="left: 52.2%; top: 52%; width: 80%; height: 80%;">
+                                        </div>
+                                    </label>
+                                    <p>พร้อมเพย์</p>
+                                </div>
+
+                                <div class="medthod_warpper">
+                                    <label class="method">
+                                        <input type="radio" name="payment_method" value="cash" id="cash">
+                                        <div class="card_box">
+                                            <img src="/image/itemslot_1_1.png" alt="item_slot" class="frame-bg">
+                                            <img src="/image/Emerald.webp" alt="Emerald" class="frame-icon" style="left: 52.2%; top: 52%; width: 75%; height: 75%;">
+                                        </div>
+                                    </label>
+                                    <p>เงินสด</p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="btn">
+                            <a href="#">
+                                <button>ยืนยันการจ่ายเงิน ํ</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

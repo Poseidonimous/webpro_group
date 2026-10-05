@@ -44,6 +44,10 @@ app.get("/order", (req, res) => {
   res.render('menu');
 });
 
+app.get("/cart", (req, res) => {
+  res.render('cart');
+});
+
 app.get("/buy_time", (req, res) => {
   res.render('customer_buytime');
 });
