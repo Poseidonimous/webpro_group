@@ -140,6 +140,7 @@ body {
     -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: unset;
     font-smooth: never;
+    background-color: #000000;
 }
 
 input, button {
@@ -156,7 +157,7 @@ input, button {
     height: 100vh;
     object-fit: cover; /* บังคับให้วิดีโอขยายเต็มจอโดยไม่เสียสัดส่วน */
     z-index: -1; /* ดันไปอยู่เลเยอร์หลังสุด */
-    opacity: 0.95; /* ปรับให้วิดีโอมืดลงนิดหน่อยได้ */
+    opacity: 0.88; /* ปรับให้วิดีโอมืดลงนิดหน่อยได้ */
 }
 
 /* body {
@@ -186,6 +187,7 @@ nav p{
         1px 3px 0 rgb(69, 69, 69);
 }
 
+
 nav a{
     color: #ffffff;
     text-decoration: none;
@@ -198,179 +200,180 @@ nav a:hover {
     color: var(--mc-redstone-red);
 }
 
-.middle{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.main_tab {
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.5));
+    margin-left: 5vw;
+    margin-top: 20px;
+    width: 90vw;
 }
 
-.head{
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-
-    justify-content: centers;
-    align-items: center;
-
-    margin-top: 2%;
-}
-
-.head {
-    color: #ececec;
-    text-shadow: 
-        3px 0px 0 rgb(69, 69, 69),
-        1px 3px 0 rgb(69, 69, 69);
-}
-
-.remain {
-    font-size: 48px;
-}
-
-.time{
-    font-size: 96px;
-    font-weight: 500;
-}
-
-.name{
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-}
-
-.user_name{
-    color: var(--mc-light-blue-wool);
-}
-
-.name p{
-    font-size: 82px;
-    font-weight: 600;
-}
-
-.card_div{
-    display: flex;
-    flex-direction: row;
-    gap: 70px;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 285px;
+.main_tab table {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-collapse: collapse;
     width: 100%;
+    white-space: nowrap;
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
 }
 
-.card_box{
-    display: inline-block;
-    position: relative;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+.main_tab thead {
+    width: 100%;
+    font-size: 42px;
+    color: rgb(239, 239, 239);
+    text-shadow: 
+        3px 0px 0 rgb(81, 81, 81),
+        1px 3px 0 rgb(81, 81, 81);
 
-    width: 135px;
-    height: 135px;
-    aspect-ratio: 1 / 1; /* ล็อกสัดส่วนไม่ให้ยืดเสียทรง */
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
 }
 
-.frame-bg {
-    display: block;   /* ลบช่องว่างด้านล่างรูป */
-    width: 100%;  /* ให้ตอบสนอง */
-    height: 100%;
-    object-fit: fill;
-
-    z-index: 1;
-    filter: brightness(0.82);
+.main_tab th {
+    background-color: #d7900b;
+    padding: 5px;
+    box-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, 0.33);
 }
 
-.frame-icon {
-    position: absolute; /* สำคัญ: ถอดภาพออกจากลำดับการวางปกติและซ้อนทับภาพอื่น */
-    
-    /* จัดให้อยู่กึ่งกลางเป๊ะ */
-    transform: translate(-50%, -50%); /* เลื่อนตัวเองกลับมาครึ่งหนึ่งของขนาดตัวเองเพื่อให้จุดศูนย์กลางตรงกัน */
-    
-    /* เพื่อให้ภาพไอคอนคงความคมชัดแบบพิกเซล */
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    object-fit: contain;
-    z-index: 2;
+.main_tab thead th:last-child {
+    box-shadow: inset -5px -5px 0 0 rgba(0, 0, 0, 0.33);
 }
 
-.card{
-    display: block;
-    text-decoration: none;
-    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.3);
-    transition: transform 0.45s ease-in-out;
+.main_tab tbody {
+    width: 100%;
+    font-size: 36px;
+    color: var(--mc-bedrock-black);
 }
 
-.card:hover {
-    transform: scale(1.05);
+.main_tab th:nth-child(1) {
+    text-align: start;
+    padding-left: 20px;
+    width: 15%;
 }
 
-@media screen and (max-width: 1000px) {
-    .card_div{
-        flex-direction: column;
-        margin-top: 100px;
-        gap: 35px;
+.main_tab td:nth-child(1) {
+    text-align: start;
+    padding-left: 20px;
+    width: 15%;
+}
+
+.main_tab th:nth-child(2) {
+    text-align: start;
+    width: 15%;
+}
+
+.main_tab td:nth-child(2) {
+    text-align: start;
+    padding-left: 5px;
+    width: 15%;
+}
+
+.main_tab th:nth-child(3) {
+    text-align: start;
+    width: 15%;
+}
+
+.main_tab td:nth-child(3) {
+    text-align: start;
+    padding-left: 5px;
+    width: 15%;
+}
+
+.main_tab th:nth-child(4), td:nth-child(4) {
+    text-align: center;
+    width: 18%;
+}
+
+.main_tab th:nth-child(5), td:nth-child(5) {
+    text-align: center;
+    width: 18%;
+}
+
+.main_tab th:nth-child(6), td:nth-child(6) {
+    text-align: center;
+    width: 18%;
+}
+
+.main_tab tbody tr:nth-child(odd) {
+    background-color: rgba(224, 223, 223, 0.5);
+}
+
+.main_tab tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* --------------------------------------------------- */
+/* ------------- Responsive Media Queries ------------ */
+/* --------------------------------------------------- */
+
+/* สำหรับหน้าจอขนาดกลางและแท็บเล็ต (Tablet - Max Width: 992px) */
+@media screen and (max-width: 992px) {
+    nav p {
+        font-size: 36px;
     }
 
-    .card_box{
-        width: clamp(150px, 30vw, 220px);
-        height: clamp(150px, 30vw, 220px);
+    nav a {
+        font-size: 26px;
+    }
+
+    .main_tab {
+        width: 95vw;
+        margin-left: 2.5vw;
+    }
+
+    .main_tab thead {
+        font-size: 32px;
+    }
+
+    .main_tab tbody {
+        font-size: 28px;
     }
 }
 
-/* ==========================================
-   Minecraft Style Tooltip
-   ========================================== */
-.mc-tooltip {
-    /* ซ่อนกล่องไว้เป็นค่าเริ่มต้น */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none; /* ไม่ให้กล่องบังเมาส์ */
+/* สำหรับสมาร์ทโฟนและหน้าจอขนาดเล็ก (Mobile - Max Width: 600px) */
+@media screen and (max-width: 600px) {
+    nav p {
+        font-size: 26px;
+        white-space: normal;
+        text-align: center;
+        width: 60%; /* ป้องกันข้อความซ้อนทับกับปุ่มย้อนกลับ */
+    }
 
-    position: absolute;
-    bottom: 100%;           /* ลอยขึ้นไปอยู่เหนือกล่องไอเทม */
-    left: 50%;
-    transform: translateX(-50%) translateY(5px);
-    z-index: 100;           /* อยู่ชั้นบนสุดเสมอ */
+    nav a {
+        font-size: 22px;
+    }
 
-    white-space: nowrap;    /* บังคับบรรทัดเดียวไม่ให้ข้อความตกบรรทัด */
-    padding: 6px 10px;
+    /* ปรับให้กรอบตารางสามารถไถซ้าย-ขวาได้เมื่อหน้าจอแคบ */
+    .main_tab {
+        width: 95vw;
+        margin-left: 2.5vw;
+        overflow-x: auto; /* เพิ่มแถบเลื่อนแนวนอน */
+        clip-path: none; /* เอาการตัดขอบหยักของกล่องนอกออกชั่วคราว เพื่อไม่ให้ตัดโดน Scrollbar */
+    }
 
-    /* สีพื้นหลังสีม่วงดำสไตล์ Minecraft Tooltip */
-    background-color: rgba(75, 75, 75, 0.92);
-    color: #FFFFFF;         /* หรือเปลี่ยนเป็น #FFFF55 ถ้าอยากได้สีเหลืองสไตล์ไอเทมแรร์ */
-    
-    font-size: 28px;
-    font-family: 'iannnnnAMD', sans-serif; /* ใช้ฟอนต์พิกเซลในโครงการ */
-    
-    /* สร้างขอบสีม่วง/น้ำเงินเรืองแสงแบบในเกม */
-    border: 2px solid var(--mc-bedrock-black);
-    box-shadow: 
-        inset 2px 2px 0px #444444,
-        inset -2px -2px 0px #2f2f2f,
-        0 4px 10px rgba(0, 0, 0, 0.7);
+    .main_tab table {
+        min-width: 650px; /* บังคับความกว้างขั้นต่ำของตาราง เพื่อไม่ให้คอลัมน์บีบตัวหนังสือจนเละ */
+    }
 
-    /* เงาตัวหนังสือสไตล์ Minecraft */
-    text-shadow: 2px 2px 0px #1c1c1c;
+    .main_tab thead {
+        font-size: 24px;
+    }
 
-    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out, visibility 0.35s ease-in-out;
-}
+    .main_tab tbody {
+        font-size: 20px;
+    }
 
-/* สามเหลี่ยมชี้ลงขนาดพิกเซลใต้กล่อง (Optional) */
-.mc-tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--mc-bedrock-black) transparent transparent transparent;
-}
-
-/* ==========================================
-   แสดงผลเมื่อเอาเมาส์ชี้ที่ .card
-   ========================================== */
-.card:hover .mc-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0); /* ขยับขึ้นนุ่มนวลนิดๆ */
+    /* ลดระยะห่างซ้ายมือของคอลัมน์แรกในจอมือถือ */
+    .main_tab th:nth-child(1), 
+    .main_tab td:nth-child(1) {
+        padding-left: 10px;
+    }
 }

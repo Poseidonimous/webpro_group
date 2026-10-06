@@ -168,7 +168,24 @@ input, button {
 nav{
     background-color: rgba(0, 0, 0, 0.4);
     padding: 15px;
+    position: relative;
+    min-height: 60px;
 }
+
+nav p{
+    color: #ffffffee;
+    font-size: 44px;
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    white-space: nowrap;
+    text-shadow: 
+        3px 0px 0 rgb(69, 69, 69),
+        1px 3px 0 rgb(69, 69, 69);
+}
+
 
 nav a{
     color: #ffffff;
@@ -181,6 +198,7 @@ nav a{
 nav a:hover {
     color: var(--mc-redstone-red);
 }
+
 .catelog_div {
     display: flex;
     flex-direction: column;
@@ -360,4 +378,111 @@ nav a:hover {
     left: -5px;
     z-index: 1001;
     pointer-events: none;
+}
+
+/* --------------------------------------------------- */
+/* ------------- Responsive Media Queries ------------ */
+/* --------------------------------------------------- */
+
+/* สำหรับหน้าจอขนาดกลางและแท็บเล็ต (Tablet - Max Width: 992px) */
+@media screen and (max-width: 992px) {
+    .outter_div {
+        flex-direction: column; /* เปลี่ยนเลย์เอาต์หลักจากซ้าย-ขวา เป็นบน-ล่าง */
+        align-items: center;
+        gap: 15px;
+    }
+
+    .warpper {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .catelog_div {
+        width: 100%;
+        height: auto; /* ปล่อยความสูงยืดตามเนื้อหา */
+        margin: 10px 0;
+        padding: 20px 0;
+    }
+
+    .title {
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .line {
+        margin: 0 auto; /* จัดเส้นให้อยู่ตรงกลาง */
+    }
+
+    .catelog_div form {
+        flex-direction: row; /* เรียงปุ่มหมวดหมู่เป็นแนวนอน */
+        flex-wrap: wrap;     /* ถ้าพื้นที่เต็มให้ปัดลงบรรทัดใหม่ */
+        width: 95%;
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+
+    .category {
+        width: auto;
+        margin-left: 0;
+        flex: 1 1 calc(33.333% - 10px); /* แบ่งความกว้างให้ได้ประมาณ 3 ปุ่มต่อแถว */
+    }
+
+    .category p {
+        font-size: 32px;
+        text-align: center;
+        padding: 5px;
+    }
+
+    .big_warpper {
+        width: 90%;
+    }
+
+    .menu_div {
+        margin-right: 0; /* ลบระยะห่างด้านขวาออกเมื่อเป็นจอเล็ก */
+        margin-top: 0;
+    }
+    
+    nav p {
+        left: 50%; /* ขยับหัวข้อกลับมาตรงกลางจอพอดี */
+    }
+}
+
+/* สำหรับสมาร์ทโฟนและหน้าจอขนาดเล็ก (Mobile - Max Width: 600px) */
+@media screen and (max-width: 600px) {
+    nav p {
+        font-size: 36px;
+    }
+
+    nav a {
+        font-size: 26px;
+    }
+
+    .catelog_div {
+        padding: 15px 0;
+    }
+
+    .title {
+        font-size: 36px;
+    }
+
+    .category {
+        flex: 1 1 calc(50% - 10px); /* แบ่งเป็น 2 คอลัมน์ (2 ปุ่มต่อแถว) เพื่อให้กดง่าย */
+    }
+
+    .category p {
+        font-size: 26px;
+    }
+
+    /* ย่อขนาดส่วนตะกร้าสินค้าไม่ให้บังหน้าจอเนื้อหาหลัก */
+    .div_cart {
+        bottom: 15px;
+        right: 15px;
+        transform: scale(0.8);
+        transform-origin: bottom right;
+    }
+
+    .catelog_div form {
+        margin-left: 10px;
+    }
 }

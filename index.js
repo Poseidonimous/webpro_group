@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/login", (req, res) => {
-  res.render('customer_login');
+  res.render('login');
 });
 
 app.post("/login", (req,res)=>{
@@ -29,35 +29,35 @@ app.post("/login", (req,res)=>{
 });
 
 app.get("/register", (req, res) => {
-  res.render('customer_register');
+  res.render('register');
 });
 
 app.post("/register", (req, res) => {
-  res.render('customer_register');
+  res.render('customer/register');
 });
 
 app.get("/home", (req, res) => {
-  res.render('customer_home');
+  res.render('customer/home');
 });
 
 app.get("/order", (req, res) => {
-  res.render('menu');
+  res.render('customer/menu');
 });
 
 app.get("/cart", (req, res) => {
-  res.render('cart');
+  res.render('customer/cart');
 });
 
 app.get("/buy_time", (req, res) => {
-  res.render('customer_buytime');
+  res.render('customer/buytime');
 });
 
 app.get("/payment", (req,res)=>{
-  res.render('payment')
+  res.render('customer/payment')
 });
 
 app.get("/history", (req, res) => {
-  res.render('customer_home');
+  res.render('customer/history');
 });
 
 app.listen(port, () => {

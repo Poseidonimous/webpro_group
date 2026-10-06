@@ -162,7 +162,24 @@ input, button {
 nav{
     background-color: rgba(0, 0, 0, 0.4);
     padding: 15px;
+    position: relative;
+    min-height: 60px;
 }
+
+nav p{
+    color: #ffffffee;
+    font-size: 44px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    white-space: nowrap;
+    text-shadow: 
+        3px 0px 0 rgb(69, 69, 69),
+        1px 3px 0 rgb(69, 69, 69);
+}
+
 
 nav a{
     color: #ffffff;
