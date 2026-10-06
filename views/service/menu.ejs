@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Drink & Food</title>
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="icon" type="image/png" href="/image/icon.png">
+</head>
+<body>
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="/video/minecraft_picnic_cp.mp4" type="video/mp4">
+    </video>
+    <main>
+        <nav>
+            <a href="/home">หน้าหลัก</a>
+            <p>สั่งอาหาร</p>
+        </nav>
+        <div class="outter_div">
+            <div class="warpper">
+                <div class="catelog_div">
+                    <div class="title">
+                        <p>หมวดหมู่</p>
+                        <div class="line"></div>
+                    </div>
+                    <form action="/category" method="get">
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="all" id="all" checked>
+                                <p>ทั้งหมด</p>
+                            </label>
+                        </div>
+                        
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="chips" id="chips">
+                                <p>ขนม</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="drink" id="drink">
+                                <p>เครื่องดื่ม</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="snack" id="snack">
+                                <p>ของทานเล่น</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="meal" id="meal">
+                                <p>อาหาร</p>
+                            </label>
+                        </div>
+
+                        <div class="category">
+                            <label>
+                                <input type="radio" name="category" value="desert" id="desert">
+                                <p>ของหวาน</p>
+                            </label>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            
+            <div class="big_warpper">
+                <div class="menu_div">
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+
+            <div class="div_cart">
+                <a href="/cart">
+                    <img src="/image/chest.png" 
+                        data-static="/image/chest.png" 
+                        data-gif="/image/chest.gif" 
+                        alt="chest" 
+                        class="chest_img">
+                    <button>ตะกร้า (2)</button>
+                </a>
+            </div>
+            
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+
+        const cartLink = document.querySelector('.div_cart a');
+        const chestImg = document.querySelector('.chest_img');
+
+        // 1. ระบุความยาวรวมของ GIF 1 รอบ (ปรับตัวเลขตรงนี้เป็นมิลลิวินาทีตามไฟล์จริงของคุณ)
+        // เช่น ถ้า GIF ยาว 1.2 วินาที ให้ใส่ 1200
+        const GIF_DURATION = 4100; 
+
+        let startTime = 0;
+        let delayTimer;
+
+        // ตอนเอาเมาส์ชี้ (Hover)
+        cartLink.addEventListener('mouseenter', () => {
+            clearTimeout(delayTimer); // เคลียร์ตัวจับเวลาเดิม
+            startTime = Date.now();   // บันทึกเวลาที่เริ่มเอาเมาส์ชี้
+            chestImg.src = chestImg.dataset.gif;
+        });
+
+        // ตอนเอาเมาส์ออก (Unhover)
+        cartLink.addEventListener('mouseleave', () => {
+            const elapsedTime = Date.now() - startTime;          // เวลาทั้งหมดที่เล่นไป
+            const currentLoopTime = elapsedTime % GIF_DURATION;  // ตำแหน่งเวลาในรอบปัจจุบัน
+            const remainingTime = GIF_DURATION - currentLoopTime; // เวลาที่เหลือกว่าจะจบครบรอบนี้
+
+            // สั่งให้รอจนจบครบรอบนั้นพอดี แล้วค่อยเปลี่ยนกลับเป็น PNG
+            delayTimer = setTimeout(() => {
+                chestImg.src = chestImg.dataset.static;
+            }, remainingTime);
+        });
+    </script>
+</body>
+</html>

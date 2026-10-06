@@ -248,13 +248,14 @@ nav a:hover {
 }
 
 .card_div{
+    position: absolute;
     display: flex;
     flex-direction: row;
     gap: 70px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 285px;
+    bottom: 4%;
     width: 100%;
 }
 
@@ -305,8 +306,9 @@ nav a:hover {
 
 @media screen and (max-width: 1000px) {
     .card_div{
+        position: unset;
         flex-direction: column;
-        margin-top: 100px;
+        margin-top: 10%;
         gap: 35px;
     }
 

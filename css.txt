@@ -227,7 +227,8 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     gap: 60px;
-    margin-top: 7%;
+
+    margin-top: 50px;
 }
 
 .top, .down {
@@ -237,23 +238,19 @@ nav a:hover {
 }
 
 .package_card_wrapper {
-    display: block;
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.6));
     display: inline-block;
 }
 
 .package_card {
-    display: flex;
-    flex-direction: row;
+    display: block;
+    align-items: center;
     cursor: pointer;
-    position: relative;
-    padding: 5px 0px;
-    padding-left: 10px;
-    padding-right: 20px;
-    white-space: nowrap;
 
-    background-color: rgb(70, 70, 70);
+    background-color: rgba(0, 0, 0, 0.4);
     padding: auto;
-    min-width: 280px;
+    text-align: center;
+    min-width: 200px;
     min-height: 150px;
 
     color: var(--mc-sea-foam-white);
@@ -269,85 +266,6 @@ nav a:hover {
     );
 
     transition: background-color 0.4s ease-in-out;
-}
-
-.package_card:has(input[value="30"]) {
-    background-color: #684b26;
-}
-
-.package_card_wrapper:has(input[value="30"]) {
-    filter: drop-shadow(5px 5px 0px #4a341d);
-}
-
-.package_card:has(input[value="60"]) {
-    background-color: #7A3D5A;
-}
-
-.package_card_wrapper:has(input[value="60"]) {
-    filter: drop-shadow(5px 5px 0px #4d1f35);
-}
-
-.package_card:has(input[value="90"]) {
-    background-color: #8f7022;
-}
-
-.package_card_wrapper:has(input[value="90"]) {
-    filter: drop-shadow(5px 5px 0px #553f0a);
-}
-
-.package_card:has(input[value="120"]) {
-    background-color: #3E3A44;
-}
-
-.package_card_wrapper:has(input[value="120"]) {
-    filter: drop-shadow(5px 5px 0px #231f29);
-}
-
-.package_card:has(input[value="150"]) {
-    background-color: #492d6d;
-}
-
-.package_card_wrapper:has(input[value="150"]) {
-    filter: drop-shadow(5px 5px 0px #341c54);
-}
-
-.package_card:has(input[value="180"]) {
-    background-color: #1b5275;
-}
-
-.package_card_wrapper:has(input[value="180"]) {
-    filter: drop-shadow(5px 5px 0px #10344a);
-}
-
-
-.inform {
-}
-
-.frame-icon {
-    margin-top: 16px;
-    margin-right: 13px;
-    z-index: 1001;
-    width: 100px;
-    height: 100px;
-}
-
-.minute {
-    font-size: 102px;
-    color: rgb(214, 212, 212);
-    z-index: 1001;
-}
-
-.minute small {
-    font-size: 48px;
-    z-index: 1001;
-}
-
-.price {
-    position: absolute;
-    bottom: 24px;
-    font-size: 48px;
-    color: rgb(214, 212, 212);
-    z-index: 1001;
 }
 
 .package_card input[type="radio"] {
@@ -370,6 +288,20 @@ nav a:hover {
         1px 3px 0 rgb(84, 84, 84);
 }
 
+.minute {
+    font-size: 102px;
+    color: rgb(214, 212, 212);
+}
+
+.minute small {
+    font-size: 48px;
+}
+
+.price {
+    font-size: 48px;
+    color: rgb(214, 212, 212);
+}
+
 .tab {
     position: relative;
     width: fit-content;
@@ -382,15 +314,14 @@ nav a:hover {
     top: 100%;
     margin-top: 16px;
 
-    filter: drop-shadow(4px 4px 0px #895308);
-    transition: all 0.35s ease;
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.35));
 }
 
 .purchase button {
     font-size: 48px;
     padding: 5px 15px;
-    background-color: #c8860b;
-    color: rgb(237, 237, 237);
+    color: rgb(53, 53, 53);
+    background-color: var(--mc-sea-foam-white);
     cursor: pointer;
 
     clip-path: polygon(
@@ -399,11 +330,12 @@ nav a:hover {
         100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
         4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
     );
+
+    transition: color 0.5s ease-in-out;
 }
 
-.purchase:hover {
-    transform: translateY(-4px); 
-    filter: drop-shadow(4px 8px 0px #895308);
+.purchase button:hover {
+    color: var(--mc-portal-purple);
 }
 
 @media screen and (max-width: 950px) {

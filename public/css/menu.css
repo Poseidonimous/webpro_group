@@ -271,8 +271,8 @@ nav a:hover {
 }
 
 .category label:has(input:checked) {
-    background-color: var(--mc-warden-blue);
-    color: #ffffff;
+    background-color: #5B8C3A;
+    color: #f3f3f3;
 }
 
 .category label:hover {
@@ -339,14 +339,14 @@ nav a:hover {
 .div_cart a {
     display: block;
     text-decoration: none; /* เอาเส้นใต้ลิงก์ออก */
-    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.5)); /* เงาพิกเซล */
+    filter: drop-shadow(4px 4px 0px #9A5D08); /* เงาพิกเซล */
     transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 /* เอฟเฟกต์ตอนเอาเมาส์ชี้ (Hover) ให้ปุ่มเด้งขึ้น */
 .div_cart a:hover {
     transform: translateY(-4px); 
-    filter: drop-shadow(4px 8px 0px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(4px 8px 0px #9A5D08);
 }
 
 /* 3. ตัวปุ่ม: รับหน้าที่ตัดมุมพิกเซลและสีพื้นหลัง */
