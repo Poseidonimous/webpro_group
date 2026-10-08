@@ -205,10 +205,23 @@ nav a:hover {
 }
 
 .head {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    justify-content: center; /* (แก้คำว่า centers เป็น center ด้วยนะครับ) */
+    align-items: center;
+    
+    margin-top: auto; /* ดันลงมาจาก nav ด้วยพื้นที่ที่เหลือ */
     color: #ececec;
     text-shadow: 
         3px 0px 0 rgb(69, 69, 69),
         1px 3px 0 rgb(69, 69, 69);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
 }
 
 .remain {
@@ -227,7 +240,7 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     gap: 60px;
-    margin-top: 7%;
+    margin-top: 45px;
 }
 
 .top, .down {
@@ -319,10 +332,6 @@ nav a:hover {
     filter: drop-shadow(5px 5px 0px #10344a);
 }
 
-
-.inform {
-}
-
 .frame-icon {
     margin-top: 16px;
     margin-right: 13px;
@@ -354,33 +363,93 @@ nav a:hover {
     display: none;
 }
 
-.package_card:has(input[type="radio"]:checked) {
-    background-color: rgba(255, 255, 255, 0.6);
-    color: white;
-    text-shadow: 
-        3px 0px 0 rgb(84, 84, 84),
-        1px 3px 0 rgb(84, 84, 84);
+/* 1. แอนิเมชันให้รูปไอเทมเด้งขึ้น-ลง เบาๆ */
+@keyframes floatIcon {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
-.package_card:has(input[type="radio"]:checked) .minute,
-.package_card:has(input[type="radio"]:checked) .price {
-    color: white;
-    text-shadow: 
-        3px 0px 0 rgb(84, 84, 84),
-        1px 3px 0 rgb(84, 84, 84);
+/* 2. ตั้งค่าการเปลี่ยนผ่าน (Transition) ให้การ์ด และรูปไอเทม */
+.package_card {
+    transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                padding-left 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+.package_card .frame-icon {
+    transition: filter 0.5s ease;
+}
+
+/* 3. แถบสีด้านซ้าย (เริ่มต้นซ่อนไว้ด้วย width: 0) */
+.package_card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    z-index: 1000;
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 4. เมื่อถูกกดเลือก (:checked) -> คลี่แถบสี 14px + ดันกล่องไปทางขวา */
+.package_card:has(input:checked)::before {
+    width: 14px;
+}
+
+.package_card:has(input:checked) {
+    padding-left: 20px; /* ดันตัวหนังสือและไอเทมไปทางขวานิดนึงอย่างนุ่มนวล */
+}
+
+/* 5. เมื่อถูกกดเลือก (:checked) -> สั่งให้รูปไอเทมเด้งดุ๊กดิ๊ก + เพิ่มเงาใต้ภาพ */
+.package_card:has(input:checked) .frame-icon {
+    animation: floatIcon 1.5s infinite ease-in-out;
+    filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* ============================================================== */
+/* ============ กำหนดสีแถบสไลด์ และสีพื้นหลังตามแพ็กเกจ ============ */
+/* ============================================================== */
+
+/* 1. แพ็กเกจ 30 นาที (Pickaxe) - #B8864B */
+.package_card:has(input[value="30"])::before { background-color: #B8864B; }
+.package_card:has(input[value="30"]:checked) { background-color: #543d1f; }
+
+/* 2. แพ็กเกจ 60 นาที (Axolotl) - #F08CB4 */
+.package_card:has(input[value="60"])::before { background-color: #F08CB4; }
+.package_card:has(input[value="60"]:checked) { background-color: #612f47; }
+
+/* 3. แพ็กเกจ 90 นาที (Totem) - #E8B923 */
+.package_card:has(input[value="90"])::before { background-color: #E8B923; }
+.package_card:has(input[value="90"]:checked) { background-color: #6c5418; }
+
+/* 4. แพ็กเกจ 120 นาที (Sword) - #9A94A6 */
+.package_card:has(input[value="120"])::before { background-color: #9A94A6; }
+.package_card:has(input[value="120"]:checked) { background-color: #312e37; }
+
+/* 5. แพ็กเกจ 150 นาที (Bow) - #9B6FD6 */
+.package_card:has(input[value="150"])::before { background-color: #9B6FD6; }
+.package_card:has(input[value="150"]:checked) { background-color: #3b225a; }
+
+/* 6. แพ็กเกจ 180 นาที (Trident) - #5FB4E8 */
+.package_card:has(input[value="180"])::before { background-color: #5FB4E8; }
+.package_card:has(input[value="180"]:checked) { background-color: #15415d; }
 
 .tab {
     position: relative;
     width: fit-content;
     margin: 0 auto;
+    margin-bottom: auto; /* ดันตัวเองขึ้นจากขอบล่าง */
+    padding-bottom: 120px;
 }
 
 .purchase {
     position: absolute;
-    right: -15%;
-    top: 100%;
-    margin-top: 16px;
+    right: -14%;
+    top: 84%;
 
     filter: drop-shadow(4px 4px 0px #895308);
     transition: all 0.35s ease;
@@ -406,20 +475,20 @@ nav a:hover {
     filter: drop-shadow(4px 8px 0px #895308);
 }
 
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 1300px) {
     .purchase {
-        right: 0;
+        right: 0%;
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
     .top, .down {
         flex-direction: column;
         align-items: center;
     }
 
     .package_slot {
-        margin-top: 33px;
+        margin-top: 40px;
     }
 
     .purchase {
@@ -432,7 +501,6 @@ nav a:hover {
         justify-content: center;
         width: 100%;
 
-        margin-top: 45px;
-        margin-bottom: 70px;
+        margin-top: 50px;
     }
 }
