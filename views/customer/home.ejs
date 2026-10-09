@@ -13,17 +13,17 @@
     </video>
     <main>
         <nav>
-            <a href="/login">ออกจากระบบ</a>
+            <a href="/">ออกจากระบบ</a>
             <p>หน้าหลัก</p>
         </nav>
 
         <div class="middle">
             <div class="head">
                 <div class="name">
-                    <p>สวัสดี</p><p class="user_name">ชวัลวิทย์</p>
+                    <p>สวัสดี</p><p class="user_name"> <%= userName %> </p>
                 </div>
                 <p class="remain">เวลาคงเหลือ</p>
-                <p class="time">01 : 30 : 23</p>
+                <p class="time" id="time-display">00 : 00 : 00</p>
             </div>
             <div class="card_div">
                 <a href="/customer/order" class="card">
@@ -61,6 +61,39 @@
                 });
             }
         });
+
+        const endTime = Number("<%= endTime %>") || 0;
+        const timeDisplay = document.getElementById("time-display");
+
+        function updateTimer() {
+            const now = Date.now();
+            const totalSeconds = Math.floor((endTime - now) / 1000);
+
+            if (totalSeconds <= 0) {
+                timeDisplay.innerText = "00 : 00 : 00";
+                
+                // Alert เฉพาะตอนเปิดหน้า Home อยู่แล้วเวลานับจนหมด
+                if (!window.timerEnded) {
+                    window.timerEnded = true;
+                    alert("เวลาใช้งานของคุณหมดแล้ว!");
+                    window.location.href = "/customer/buy_time";
+                }
+                return;
+            }
+
+            let hours = Math.floor(totalSeconds / 3600);
+            let minutes = Math.floor((totalSeconds % 3600) / 60);
+            let seconds = totalSeconds % 60;
+
+            let hStr = String(hours).padStart(2, '0');
+            let mStr = String(minutes).padStart(2, '0');
+            let sStr = String(seconds).padStart(2, '0');
+
+            timeDisplay.innerText = `${hStr} : ${mStr} : ${sStr}`;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
     </script>
 </body>
 </html>

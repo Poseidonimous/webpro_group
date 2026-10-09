@@ -284,51 +284,51 @@ main {
     transition: background-color 0.4s ease-in-out;
 }
 
-.package_card:has(input[value="30"]) {
+.package_card:has(input[value="1"]) {
     background-color: #684b26;
 }
 
-.package_card_wrapper:has(input[value="30"]) {
+.package_card_wrapper:has(input[value="1"]) {
     filter: drop-shadow(5px 5px 0px #4a341d);
 }
 
-.package_card:has(input[value="60"]) {
+.package_card:has(input[value="2"]) {
     background-color: #7A3D5A;
 }
 
-.package_card_wrapper:has(input[value="60"]) {
+.package_card_wrapper:has(input[value="2"]) {
     filter: drop-shadow(5px 5px 0px #4d1f35);
 }
 
-.package_card:has(input[value="90"]) {
+.package_card:has(input[value="3"]) {
     background-color: #8f7022;
 }
 
-.package_card_wrapper:has(input[value="90"]) {
+.package_card_wrapper:has(input[value="3"]) {
     filter: drop-shadow(5px 5px 0px #553f0a);
 }
 
-.package_card:has(input[value="120"]) {
+.package_card:has(input[value="4"]) {
     background-color: #3E3A44;
 }
 
-.package_card_wrapper:has(input[value="120"]) {
+.package_card_wrapper:has(input[value="4"]) {
     filter: drop-shadow(5px 5px 0px #231f29);
 }
 
-.package_card:has(input[value="150"]) {
+.package_card:has(input[value="5"]) {
     background-color: #492d6d;
 }
 
-.package_card_wrapper:has(input[value="150"]) {
+.package_card_wrapper:has(input[value="5"]) {
     filter: drop-shadow(5px 5px 0px #341c54);
 }
 
-.package_card:has(input[value="180"]) {
+.package_card:has(input[value="6"]) {
     background-color: #1b5275;
 }
 
-.package_card_wrapper:has(input[value="180"]) {
+.package_card_wrapper:has(input[value="6"]) {
     filter: drop-shadow(5px 5px 0px #10344a);
 }
 
@@ -415,28 +415,28 @@ main {
 /* ============================================================== */
 
 /* 1. แพ็กเกจ 30 นาที (Pickaxe) - #B8864B */
-.package_card:has(input[value="30"])::before { background-color: #B8864B; }
-.package_card:has(input[value="30"]:checked) { background-color: #543d1f; }
+.package_card:has(input[value="1"])::before { background-color: #B8864B; }
+.package_card:has(input[value="1"]:checked) { background-color: #543d1f; }
 
 /* 2. แพ็กเกจ 60 นาที (Axolotl) - #F08CB4 */
-.package_card:has(input[value="60"])::before { background-color: #F08CB4; }
-.package_card:has(input[value="60"]:checked) { background-color: #612f47; }
+.package_card:has(input[value="2"])::before { background-color: #F08CB4; }
+.package_card:has(input[value="2"]:checked) { background-color: #612f47; }
 
 /* 3. แพ็กเกจ 90 นาที (Totem) - #E8B923 */
-.package_card:has(input[value="90"])::before { background-color: #E8B923; }
-.package_card:has(input[value="90"]:checked) { background-color: #6c5418; }
+.package_card:has(input[value="3"])::before { background-color: #E8B923; }
+.package_card:has(input[value="3"]:checked) { background-color: #6c5418; }
 
 /* 4. แพ็กเกจ 120 นาที (Sword) - #9A94A6 */
-.package_card:has(input[value="120"])::before { background-color: #9A94A6; }
-.package_card:has(input[value="120"]:checked) { background-color: #312e37; }
+.package_card:has(input[value="4"])::before { background-color: #9A94A6; }
+.package_card:has(input[value="4"]:checked) { background-color: #312e37; }
 
 /* 5. แพ็กเกจ 150 นาที (Bow) - #9B6FD6 */
-.package_card:has(input[value="150"])::before { background-color: #9B6FD6; }
-.package_card:has(input[value="150"]:checked) { background-color: #3b225a; }
+.package_card:has(input[value="5"])::before { background-color: #9B6FD6; }
+.package_card:has(input[value="5"]:checked) { background-color: #3b225a; }
 
 /* 6. แพ็กเกจ 180 นาที (Trident) - #5FB4E8 */
-.package_card:has(input[value="180"])::before { background-color: #5FB4E8; }
-.package_card:has(input[value="180"]:checked) { background-color: #15415d; }
+.package_card:has(input[value="6"])::before { background-color: #5FB4E8; }
+.package_card:has(input[value="6"]:checked) { background-color: #15415d; }
 
 .tab {
     position: relative;
