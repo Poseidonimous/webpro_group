@@ -1,1 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2039"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="user" custom_title="0" dock_id="1" table="4,4:mainuser"/><dock_state state="000000ff00000000fd00000001000000020000016400000219fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000001640000011800ffffff000001640000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="category" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="74"/><column index="2" value="94"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="order_detail" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="94"/><column index="2" value="58"/><column index="3" value="71"/><column index="4" value="55"/><column index="5" value="65"/><column index="6" value="54"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="orders" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="0" mode="1"/></sort><column_widths><column index="1" value="55"/><column index="2" value="52"/><column index="3" value="84"/><column index="4" value="79"/><column index="5" value="68"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="payment" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="74"/><column index="2" value="58"/><column index="3" value="106"/><column index="4" value="51"/><column index="5" value="50"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="product" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="5" mode="0"/></sort><column_widths><column index="1" value="69"/><column index="2" value="76"/><column index="3" value="39"/><column index="4" value="36"/><column index="5" value="64"/><column index="6" value="58"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="39"/><column index="2" value="29"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="user" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="4" mode="0"/></sort><column_widths><column index="1" value="50"/><column index="2" value="140"/><column index="3" value="62"/><column index="4" value="62"/><column index="5" value="142"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1"></sql><current_tab id="0"/></tab_sql></sqlb_project>
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2039"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="product" custom_title="0" dock_id="1" table="4,7:mainproduct"/><dock_state state="000000ff00000000fd0000000100000002000002bf00000219fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000002bf0000011e00ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="category" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="74"/><column index="2" value="94"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="product" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="69"/><column index="2" value="76"/><column index="3" value="54"/><column index="4" value="46"/><column index="5" value="273"/><column index="6" value="58"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">INSERT INTO product (product_id, category_id, name, price, image_url, is_active) VALUES
+-- หมวดหมู่: ขนม (category_id = 2)
+(7, 2, 'เทสโต้', 25, 'image/snack/F001.png', 1),
+(8, 2, 'เลย์', 25, 'image/snack/F002.png', 1),
+(9, 2, 'ตะวัน', 20, 'image/snack/F003.png', 1),
+(10, 2, 'ปาปริก้า', 20, 'image/snack/F004.png', 1),
+(11, 2, 'หมึกกรุบ', 25, 'image/snack/F005.png', 1),
+(12, 2, 'โอรีโอ', 20, 'image/snack/F006.png', 1),
+(13, 2, 'ปาร์ตี้', 20, 'image/snack/F007.png', 1),
+(14, 2, 'ทาโร', 20, 'image/snack/F008.png', 1),
+(15, 2, 'ป๊อกกี้', 20, 'image/snack/F009.png', 1),
+(16, 2, 'โดริโทส', 25, 'image/snack/F010.png', 1),
+(17, 2, 'คิทแคท', 30, 'image/snack/F011.png', 1),
+
+-- หมวดหมู่: เครื่องดื่ม (category_id = 3)
+(18, 3, 'น้ำดืมคริสตัล', 10, 'image/drinks/F012.png', 1),
+(19, 3, 'น้ำดืมสิงห์', 10, 'image/drinks/F013.png', 1),
+(20, 3, 'เป๊ปซี่', 20, 'image/drinks/F014.png', 1),
+(21, 3, 'โค้ก', 20, 'image/drinks/F015.png', 1),
+(22, 3, 'สไปรท์', 20, 'image/drinks/F016.png', 1),
+(23, 3, 'แฟนต้า กลิ่นส้ม', 20, 'image/drinks/F017.png', 1),
+(24, 3, 'แฟนต้า กลิ่นผลไม้รวม', 20, 'image/drinks/F018.png', 1),
+(25, 3, 'แฟนต้า กลิ่นสตรอเบอร์รี่', 20, 'image/drinks/F019.png', 1),
+(26, 3, 'โออิชิ', 20, 'image/drinks/F020.png', 1),
+(27, 3, 'สิงห์ เลมอนโซดา', 15, 'image/drinks/F021.png', 1),
+(28, 3, 'ลิปตัน', 20, 'image/drinks/F022.png', 1),
+
+-- หมวดหมู่: ของทานเล่น (category_id = 4)
+(29, 4, 'เฟรนช์ฟรายส์', 49, 'image/side/F023.png', 1),
+(30, 4, 'ปอเปี๊ยะทอด', 59, 'image/side/F024.png', 1),
+(31, 4, 'นักเก็ตไก่', 59, 'image/side/F025.png', 1),
+(32, 4, 'เกี๊ยวซ่า', 59, 'image/side/F026.png', 1),
+(33, 4, 'ไก่ป๊อป', 59, 'image/side/F027.png', 1),
+(34, 4, 'หัวหอมทอด', 49, 'image/side/F028.png', 1),
+(35, 4, 'แฮชบราวน์', 49, 'image/side/F029.png', 1),
+(36, 4, 'เกี้ยวกรอบ', 49, 'image/side/F030.png', 1),
+(37, 4, 'ชีสบอล', 59, 'image/side/F031.png', 1),
+(38, 4, 'ไส้กรอกแดง', 59, 'image/side/F032.png', 1),
+(39, 4, 'รวมถั่ว', 49, 'image/side/F033.png', 1),
+
+-- หมวดหมู่: อาหาร (category_id = 5)
+(40, 5, 'ข้าวผัด', 79, 'image/main/F034.png', 1),
+(41, 5, 'ข้าวผัดกระเพราหมูสับ', 79, 'image/main/F035.png', 1),
+(42, 5, 'ผัดมาม่า', 69, 'image/main/F036.png', 1),
+(43, 5, 'ข้าวไข่ข้น', 69, 'image/main/F037.png', 1),
+(44, 5, 'ข้าวยำไก่แซ่บ', 79, 'image/main/F038.png', 1),
+(45, 5, 'ข้าวหมูทอดกระเทียม', 79, 'image/main/F039.png', 1),
+(46, 5, 'ข้าวหน้าไก่ทอด', 79, 'image/main/F040.png', 1),
+(47, 5, 'ผัดซีอิ้ว', 69, 'image/main/F041.png', 1),
+(48, 5, 'ผัดวุ้นเส้น', 69, 'image/main/F042.png', 1),
+(49, 5, 'ข้าวหมูผัดพริกแกง', 79, 'image/main/F043.png', 1),
+(50, 5, 'ข้าวผัดอเมริกัน', 79, 'image/main/F044.png', 1),
+
+-- หมวดหมู่: ของหวาน (category_id = 6)
+(51, 6, 'ไอศกรีมรสวนิลา', 39, 'image/dessert/F045.png', 1),
+(52, 6, 'ไอศกรีมรสช็อกโกแลต', 39, 'image/dessert/F046.png', 1),
+(53, 6, 'ไอศกรีมรสมะนาว', 39, 'image/dessert/F047.png', 1),
+(54, 6, 'ไอศกรีมรสคุกกี้แอนด์ครีม', 39, 'image/dessert/F048.png', 1),
+(55, 6, 'ไอศกรีมรสชาเขียว', 39, 'image/dessert/F049.png', 1),
+(56, 6, 'วอลล์แมกนั่ม คลาสสิค', 59, 'image/dessert/F050.png', 1),
+(57, 6, 'แพดเดิลป๊อบ ท็อปเทน วานิลลา', 25, 'image/dessert/F051.png', 1),
+(58, 6, 'แพดเดิลป๊อบ ท็อปเทน ช็อกโกแลต', 25, 'image/dessert/F052.png', 1),
+(59, 6, 'วอลล์ ยักษ์คู่รสโคล่า', 15, 'image/dessert/F053.png', 1),
+(60, 6, 'วอลล์ ยักษ์คู่รสส้ม', 15, 'image/dessert/F054.png', 1),
+(61, 6, 'แพดเดิลป๊อบ เรนโบว์ เพาเวอร์', 15, 'image/dessert/F055.png', 1);</sql><current_tab id="0"/></tab_sql></sqlb_project>

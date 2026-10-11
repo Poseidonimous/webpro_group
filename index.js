@@ -321,16 +321,74 @@ app.post("/payment", (req,res) => {
   });
 });
 
+
+//CUSTOMER ORDER
 app.get("/customer/order", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `customer`) {
+    return res.redirect("/");
+  }
+
   res.render('customer/menu');
+});
+
+//API SEND MENU BY CATEGORY
+app.get("/api/products", (req, res) => {
+    const category = req.query.category || 'all';
+    
+    if(category === 'all') {
+      const sql = `SELECT * FROM product WHERE category_id <> 1`;
+      db.all(sql, function(err,dataFromDB) {
+        if(err){
+          console.log(err);
+        }
+        res.json(dataFromDB);
+      });
+    }
+
+    else{
+      const product_sql = `SELECT * FROM product WHERE category_id = ?`;
+      db.all(product_sql, [category], function(err,dataFromDB) {
+        if(err){
+        console.log(err);
+      }
+      res.json(dataFromDB);
+      });
+    }
 });
 
 app.get("/customer/cart", (req, res) => {
   res.render('customer/cart');
 });
 
+
+//CUSTOMER BUYING HISTORY
 app.get("/customer/history", (req, res) => {
-  res.render('customer/history');
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `customer`) {
+    return res.redirect("/");
+  }
+
+  const user_id = req.session.user_id;
+  const sql = `
+  SELECT o.order_id, o.created_at, o.total_amount, o.order_status, p.payment_method
+  FROM orders o
+  LEFT JOIN payment p ON o.order_id = p.order_id
+  WHERE o.user_id = ?
+  ORDER BY o.order_id DESC
+  `;
+  db.all(sql, [user_id], function(err, data) {
+    if(err){
+      console.log(err);
+    }
+    res.render('customer/history', {history:data});
+  });
 });
 
 
@@ -365,8 +423,28 @@ app.get("/service/cart", (req, res) => {
   res.render('service/cart');
 });
 
+//SERVICE BUYING HISTORY(ALL)
 app.get("/service/history", (req, res) => {
-  res.render('service/history');
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `service`) {
+    return res.redirect("/");
+  }
+
+  const sql = `
+  SELECT o.order_id, o.created_at, o.total_amount, o.order_status, p.payment_method
+  FROM orders o
+  LEFT JOIN payment p ON o.order_id = p.order_id
+  ORDER BY o.order_id DESC
+  `;
+  db.all(sql, function(err, data) {
+    if(err){
+      console.log(err);
+    }
+    res.render('service/history', {history:data});
+  });
 });
 
 

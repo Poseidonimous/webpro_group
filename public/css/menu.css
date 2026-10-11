@@ -304,7 +304,7 @@ nav a:hover {
     background-color: rgba(255, 255, 255, 0.9);
     flex: 1;               /* สั่งให้กล่องนี้กินพื้นที่ที่เหลือทั้งหมดฝั่งขวา */
     min-width: 0;
-    height: 2000px;
+    height: auto;
     margin-top: 20px;
     margin-right: 50px;
     clip-path: polygon(
@@ -378,6 +378,61 @@ nav a:hover {
     left: -5px;
     z-index: 1001;
     pointer-events: none;
+}
+
+.menu {
+    /* เปลี่ยนจาก flex เป็น grid */
+    display: grid;
+    /* เวทมนตร์อยู่ตรงนี้: บอกให้มันสร้างคอลัมน์อัตโนมัติ กว้างอย่างน้อย 200px ถ้าเหลือที่ให้ขยายจนเต็ม (1fr) */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-left: 0px;
+}
+
+.shadow {
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.3));
+}
+
+.item {
+    /* เอา width: 225px; ออก เพื่อให้ Grid จัดการให้ */
+    width: 100%;
+    
+    /* เพิ่ม Flex ภายในตัวการ์ดเพื่อจัดระเบียบรูปและข้อความให้อยู่ตรงกลาง */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    background-color: #ffffff;
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.item img {
+    width: 100%;
+    max-width: 215px;    /* ล็อคไว้ไม่ให้รูปขยายใหญ่จนหน้าเกลียดเวลาจอใหญ่จัดๆ */
+    aspect-ratio: 1 / 1; /* (แนะนำ) บังคับให้รูปเป็นสี่เหลี่ยมจตุรัสเท่ากันทุกกล่อง เลย์เอาต์จะได้ไม่พังถ้ารูปมาคนละไซส์ */
+    object-fit: cover;   /* ตัดส่วนเกินรูปออกไม่ให้เบี้ยว */
+}
+
+.product_name {
+    font-size: 42px;
+    margin-top: 10px;
+}
+
+.product_price {
+    margin-top: 5px;
+    font-size: 38px;
+    color: var(--mc-redstone-red);
+}
+
+.detail {
+    background-color: #d4d4d4;
+    width: 100%;
 }
 
 /* --------------------------------------------------- */

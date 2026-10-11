@@ -256,13 +256,13 @@ nav a:hover {
 .main_tab th:nth-child(1) {
     text-align: start;
     padding-left: 20px;
-    width: 15%;
+    width: 18%;
 }
 
 .main_tab td:nth-child(1) {
     text-align: start;
-    padding-left: 20px;
-    width: 15%;
+    padding-left: 18px;
+    width: 18%;
 }
 
 .main_tab th:nth-child(2) {
@@ -289,12 +289,12 @@ nav a:hover {
 
 .main_tab th:nth-child(4), td:nth-child(4) {
     text-align: center;
-    width: 18%;
+    width: 15%;
 }
 
 .main_tab th:nth-child(5), td:nth-child(5) {
     text-align: center;
-    width: 18%;
+    width: 16%;
 }
 
 .main_tab th:nth-child(6), td:nth-child(6) {
