@@ -23,7 +23,7 @@
                         <p>หมวดหมู่</p>
                         <div class="line"></div>
                     </div>
-                    <form action="/category" method="get">
+                    <form action="/service/order" method="get">
 
                         <div class="category">
                             <label>
@@ -34,35 +34,35 @@
                         
                         <div class="category">
                             <label>
-                                <input type="radio" name="category" value="chips" id="chips">
+                                <input type="radio" name="category" value="2" id="chips">
                                 <p>ขนม</p>
                             </label>
                         </div>
 
                         <div class="category">
                             <label>
-                                <input type="radio" name="category" value="drink" id="drink">
+                                <input type="radio" name="category" value="3" id="drink">
                                 <p>เครื่องดื่ม</p>
                             </label>
                         </div>
 
                         <div class="category">
                             <label>
-                                <input type="radio" name="category" value="snack" id="snack">
+                                <input type="radio" name="category" value="4" id="snack">
                                 <p>ของทานเล่น</p>
                             </label>
                         </div>
 
                         <div class="category">
                             <label>
-                                <input type="radio" name="category" value="meal" id="meal">
+                                <input type="radio" name="category" value="5" id="meal">
                                 <p>อาหาร</p>
                             </label>
                         </div>
 
                         <div class="category">
                             <label>
-                                <input type="radio" name="category" value="desert" id="desert">
+                                <input type="radio" name="category" value="6" id="desert">
                                 <p>ของหวาน</p>
                             </label>
                         </div>
@@ -85,50 +85,200 @@
                         data-gif="/image/chest.gif" 
                         alt="chest" 
                         class="chest_img">
-                    <button>ตะกร้า (2)</button>
+                    <button>ตะกร้า (0)</button>
                 </a>
             </div>
             
         </div>
     </main>
     <script>
+        const GIF_DURATION = 4100; 
+        let startTime = 0;
+        let delayTimer;
+        let clickAnimationTimer;
+
+        const cartLink = document.querySelector('.div_cart a');
+        const chestImg = document.querySelector('.chest_img');
+        const categoryRadios = document.querySelectorAll('input[name="category"]');
+        const menuContainer = document.querySelector('.menu');
+
+        // ==========================================
+        // ส่วนจัดการ Cookie
+        // ==========================================
+
+        // ฟังก์ชันอ่าน Cookie ตะกร้าสินค้า
+        function getCartCookie() {
+            const name = "cart=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(name) === 0) {
+                    try {
+                        return JSON.parse(c.substring(name.length, c.length));
+                    } catch (e) {
+                        return [];
+                    }
+                }
+            }
+            return [];
+        }
+
+        // ฟังก์ชันบันทึก Cookie ตะกร้าสินค้า (อายุ 1 วัน)
+        function setCartCookie(cartData) {
+            const jsonString = encodeURIComponent(JSON.stringify(cartData));
+            document.cookie = `cart=${jsonString}; path=/; max-age=86400`;
+        }
+
+        // ==========================================
+        // สิ้นสุดส่วนจัดการ Cookie
+        // ==========================================
+
+        // เริ่มต้นการทำงานเมื่อโหลดหน้าเว็บเรียบร้อย
         document.addEventListener("DOMContentLoaded", () => {
+            // เล่นวิดีโอพื้นหลัง
             const video = document.getElementById("bg-video");
             if (video) {
                 video.play().catch(error => {
                     console.log("Autoplay was prevented, retrying...", error);
                 });
             }
+
+            // โหลดสินค้าหมวด 'all' และอัปเดตตัวเลขปุ่มตะกร้าทันที
+            loadProducts('all'); 
+            updateCartIcon();
         });
 
-        const cartLink = document.querySelector('.div_cart a');
-        const chestImg = document.querySelector('.chest_img');
-
-        // 1. ระบุความยาวรวมของ GIF 1 รอบ (ปรับตัวเลขตรงนี้เป็นมิลลิวินาทีตามไฟล์จริงของคุณ)
-        // เช่น ถ้า GIF ยาว 1.2 วินาที ให้ใส่ 1200
-        const GIF_DURATION = 4100; 
-
-        let startTime = 0;
-        let delayTimer;
-
-        // ตอนเอาเมาส์ชี้ (Hover)
+        // เหตุการณ์ตอนเอาเมาส์ชี้กล่องสมบัติ (Hover)
         cartLink.addEventListener('mouseenter', () => {
-            clearTimeout(delayTimer); // เคลียร์ตัวจับเวลาเดิม
-            startTime = Date.now();   // บันทึกเวลาที่เริ่มเอาเมาส์ชี้
+            clearTimeout(delayTimer); 
+            startTime = Date.now();   
             chestImg.src = chestImg.dataset.gif;
         });
 
-        // ตอนเอาเมาส์ออก (Unhover)
+        // เหตุการณ์ตอนเอาเมาส์ออกจากกล่องสมบัติ (Unhover)
         cartLink.addEventListener('mouseleave', () => {
-            const elapsedTime = Date.now() - startTime;          // เวลาทั้งหมดที่เล่นไป
-            const currentLoopTime = elapsedTime % GIF_DURATION;  // ตำแหน่งเวลาในรอบปัจจุบัน
-            const remainingTime = GIF_DURATION - currentLoopTime; // เวลาที่เหลือกว่าจะจบครบรอบนี้
+            const elapsedTime = Date.now() - startTime;          
+            const currentLoopTime = elapsedTime % GIF_DURATION;  
+            const remainingTime = GIF_DURATION - currentLoopTime; 
 
-            // สั่งให้รอจนจบครบรอบนั้นพอดี แล้วค่อยเปลี่ยนกลับเป็น PNG
             delayTimer = setTimeout(() => {
                 chestImg.src = chestImg.dataset.static;
             }, remainingTime);
         });
+
+        // ฟังก์ชันดึงข้อมูลและแสดงผลรายการสินค้า
+        function loadProducts(category) {
+            fetch(`/api/products?category=${category}`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Server error: " + res.status);
+                    return res.json();
+                })
+                .then(products => {
+                    menuContainer.innerHTML = ''; 
+
+                    if (!Array.isArray(products) || products.length === 0) {
+                        menuContainer.innerHTML = '<p style="text-align:center; width:100%; padding:20px;">ไม่มีรายการสินค้า</p>';
+                        return;
+                    }
+
+                    products.forEach(p => {
+                        const productId = p.id || p.product_id;
+                        const imagePath = p.image || p.image_url || '';
+                        const productName = p.name || p.product_name || 'ไม่มีชื่อสินค้า';
+                        const productPrice = Number(p.price || 0).toFixed(2); // แปลงราคาเป็นทศนิยม 2 ตำแหน่ง (.00)
+
+                        menuContainer.innerHTML += `
+                            <div class="shadow">
+                                <div class="item">
+                                    <img src="/${imagePath}" alt="${productName}">
+                                    <div class="detail">
+                                        <p class="product_name">${productName}</p>
+                                        <div class="foot">
+                                            <p class="product_price">ราคา: ${productPrice} ฿</p>
+                                            <div class="button_shadow">
+                                                <button class="cart_button" onclick="addToCart(${productId})"> ใส่ตะกร้า </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(err => {
+                    console.error("Error loading products:", err);
+                    menuContainer.innerHTML = '<p style="text-align:center; color:red; width:100%; padding:20px;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                });
+        }
+
+        // ดักจับเมื่อผู้ใช้คลิกเลือกหมวดหมู่สินค้า
+        categoryRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                loadProducts(e.target.value); 
+            });
+        });
+
+        // ฟังก์ชันเพิ่มสินค้าลงตะกร้า (เปลี่ยนมาใช้ Cookie แล้ว)
+        function addToCart(productId) {
+            if (!productId) {
+                console.error("ไม่พบค่า productId");
+                return;
+            }
+
+            // อ่านข้อมูลจาก Cookie
+            let cart = getCartCookie();
+            let existingItem = cart.find(item => item.product_id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ 
+                    product_id: productId, 
+                    quantity: 1 
+                });
+            }
+
+            // บันทึกกลับลง Cookie
+            setCartCookie(cart);
+            
+            updateCartIcon();
+            playChestAnimation();
+        }
+
+        // ฟังก์ชันคำนวณจำนวนชิ้นทั้งหมดในตะกร้า แล้วอัปเดตตัวเลขบนปุ่ม Chest (อ่านจาก Cookie)
+        function updateCartIcon() {
+            let cart = getCartCookie();
+            let totalItems = 0;
+            
+            cart.forEach(item => {
+                totalItems += item.quantity;
+            });
+
+            const cartButton = document.querySelector('.div_cart button');
+            if (cartButton) {
+                cartButton.textContent = `ตะกร้า (${totalItems})`;
+            }
+        }
+
+        // ฟังก์ชันเล่นอนิเมชันกล่องสมบัติและสั่งให้ปุ่มตะกร้าเด้ง
+        function playChestAnimation() {
+            clearTimeout(clickAnimationTimer);
+            clearTimeout(delayTimer); 
+
+            // รีเซ็ตการเล่น GIF กล่องสมบัติจากเฟรมแรก
+            chestImg.src = chestImg.dataset.gif + "?t=" + Date.now();
+
+            clickAnimationTimer = setTimeout(() => {
+                chestImg.src = chestImg.dataset.static;
+            }, GIF_DURATION);
+
+            // สั่งให้ปุ่มตะกร้าเด้งตอบรับ
+            cartLink.classList.remove('cart-pop-anim');
+            setTimeout(() => {
+                cartLink.classList.add('cart-pop-anim');
+            }, 10);
+        }
     </script>
 </body>
 </html>

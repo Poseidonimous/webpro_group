@@ -262,14 +262,8 @@ app.post("/payment", (req,res) => {
   const order_id = 'ORD' + Date.now();
   const user_id = req.session.user_id;
   
-  // แปลง Date เป็นรูปแบบ YYYY-MM-DD HH:MM:SS
-  const d = new Date();
-  const now = d.getFullYear() + '-' + 
-              String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-              String(d.getDate()).padStart(2, '0') + ' ' + 
-              String(d.getHours()).padStart(2, '0') + ':' + 
-              String(d.getMinutes()).padStart(2, '0') + ':' + 
-              String(d.getSeconds()).padStart(2, '0');
+  // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+  const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
 
   const price_sql = `SELECT * FROM product WHERE product_id = ? AND is_active = 1`;
   db.get(price_sql, [package], function(err, product) {
@@ -278,7 +272,7 @@ app.post("/payment", (req,res) => {
       return res.redirect("/customer/buy_time");
     }
     const order_sql = `INSERT INTO orders(order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, ?, ?)`;
-    db.run(order_sql, [order_id, user_id, product.price, 'success', now], function(error) {
+    db.run(order_sql, [order_id, user_id, product.price, 'เสร็จสิ้น', now], function(error) {
       if(error) {
         console.log(error);
         return res.redirect("/customer/buy_time");
@@ -319,7 +313,7 @@ app.post("/payment", (req,res) => {
 
             return res.send(`
               <script>
-                alert('ซื้อเวลาสำเร็จ');
+                alert('ซื้อเวลาเสร็จสิ้น');
                 window.location.href = '/customer/home';
               </script>
             `);
@@ -385,7 +379,7 @@ app.get("/customer/cart", (req, res) => {
 //CUSTOMER PURCHASE IN CART
 app.post("/cart_payment", (req, res) => {
     // 1. อ่านวิธีจ่ายเงินจาก Form
-    const paymentMethod = req.body.payment_method || 'promptpay';
+    const paymentMethod = req.body.payment_method || 'พร้อมเพย์';
 
     // 2. อ่านข้อมูล Cart จาก Cookie
     let cart = [];
@@ -403,9 +397,11 @@ app.post("/cart_payment", (req, res) => {
     }
 
     // 3. กำหนดค่าตัวแปรเบื้องต้น
-    // สมมติว่าดึง user_id จาก Session ของคนที่ Login เข้ามา (ถ้าคุณใช้ req.session)
-    const userId = req.session.user_id || 1; // ใส่ 1 ไว้เป็นค่าเริ่มต้นกัน Error ตอนทดสอบ
-    const orderId = "ORD" + Date.now(); // สร้างรหัสออเดอร์จากเวลาปัจจุบัน
+    const userId = req.session.user_id || 1;
+    const orderId = "ORD" + Date.now();
+
+    // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+    const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
 
     // 4. ดึงราคาจาก Database เพื่อนำมาคำนวณ
     const productIds = cart.map(item => item.product_id).join(',');
@@ -441,9 +437,9 @@ app.post("/cart_payment", (req, res) => {
         // เริ่มบันทึกลง Database
         // ==========================================
         db.serialize(() => {
-            // ตาราง orders: บันทึกข้อมูลหลักของคำสั่งซื้อ กำหนดสถานะเป็น 'pending'
-            db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status) VALUES (?, ?, ?, 'pending')`, 
-                [orderId, userId, totalAmount], function(err) {
+            // ตาราง orders: เพิ่มคอลัมน์ created_at และใส่เวลาไทย (ใช้ 'รอจัดเตรียม' แทน เพื่อเลี่ยงสระ ำ)
+            db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, 'รอจัดเตรียม', ?)`, 
+                [orderId, userId, totalAmount, now], function(err) {
                 if (err) {
                     console.error("Error inserting orders:", err);
                     return res.status(500).send("บันทึกออเดอร์ไม่สำเร็จ");
@@ -456,9 +452,9 @@ app.post("/cart_payment", (req, res) => {
                 });
                 stmt.finalize();
 
-                // ตาราง payment: บันทึกข้อมูลการชำระเงิน
-                db.run(`INSERT INTO payment (order_id, payment_method, amount) VALUES (?, ?, ?)`, 
-                    [orderId, paymentMethod, totalAmount], function(err) {
+                // ตาราง payment: เพิ่มคอลัมน์ paid_at และใส่เวลาไทย
+                db.run(`INSERT INTO payment (order_id, payment_method, amount, paid_at) VALUES (?, ?, ?, ?)`, 
+                    [orderId, paymentMethod, totalAmount, now], function(err) {
                     if (err) {
                         console.error("Error inserting payment:", err);
                         return res.status(500).send("บันทึกการชำระเงินไม่สำเร็จ");
@@ -470,7 +466,7 @@ app.post("/cart_payment", (req, res) => {
                     // เปลี่ยนหน้าไปยังหน้ารายการสั่งซื้อของลูกค้า
                     return res.send(`
                       <script>
-                        alert('ซื้อสินค้าสำเร็จ');
+                        alert('ซื้อสินค้าเสร็จสิ้น');
                         window.location.href = '/customer/home';
                       </script>
                     `);
@@ -531,12 +527,155 @@ app.get("/service/home", (req, res) => {
   });
 });
 
+//SERVICE ORDER
 app.get("/service/order", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `service`) {
+    return res.redirect("/");
+  }
+
   res.render('service/menu');
 });
 
+//API SEND MENU BY CATEGORY
+app.get("/api/products", (req, res) => {
+    const category = req.query.category || 'all';
+    
+    if(category === 'all') {
+      const sql = `SELECT * FROM product WHERE category_id <> 1`;
+      db.all(sql, function(err,dataFromDB) {
+        if(err){
+          console.log(err);
+        }
+        res.json(dataFromDB);
+      });
+    }
+
+    else{
+      const product_sql = `SELECT * FROM product WHERE category_id = ?`;
+      db.all(product_sql, [category], function(err,dataFromDB) {
+        if(err){
+        console.log(err);
+      }
+      res.json(dataFromDB);
+      });
+    }
+});
+
+//SERVICE CART ITEM
 app.get("/service/cart", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `service`) {
+    return res.redirect("/");
+  }
+
   res.render('service/cart');
+});
+
+//SERVICE PURCHASE IN CART
+app.post("/service_cart_payment", (req, res) => {
+    // 1. อ่านวิธีจ่ายเงินจาก Form
+    const paymentMethod = req.body.payment_method || 'พร้อมเพย์';
+
+    // 2. อ่านข้อมูล Cart จาก Cookie
+    let cart = [];
+    if (req.cookies.cart) {
+        try {
+            cart = JSON.parse(req.cookies.cart);
+        } catch (e) {
+            cart = [];
+        }
+    }
+
+    // ถ้าไม่มีของในตะกร้าให้เด้งกลับไปหน้าแรก
+    if (cart.length === 0) {
+        return res.redirect('/service/home');
+    }
+
+    // 3. กำหนดค่าตัวแปรเบื้องต้น
+    const userId = req.session.user_id || 1;
+    const orderId = "ORD" + Date.now();
+
+    // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+    const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
+
+    // 4. ดึงราคาจาก Database เพื่อนำมาคำนวณ
+    const productIds = cart.map(item => item.product_id).join(',');
+    
+    // ค้นหาสินค้าทั้งหมดที่มีในตะกร้าจากตาราง product
+    db.all(`SELECT product_id, price FROM product WHERE product_id IN (${productIds})`, [], (err, products) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
+        }
+
+        let totalAmount = 0;
+        const orderDetails = [];
+
+        // คำนวณราคารวมและยอดแยกแต่ละชิ้น
+        cart.forEach(item => {
+            const product = products.find(p => p.product_id == item.product_id);
+            if (product) {
+                const unitPrice = product.price;
+                const subtotal = unitPrice * item.quantity;
+                totalAmount += subtotal;
+
+                orderDetails.push({
+                    productId: item.product_id,
+                    quantity: item.quantity,
+                    unitPrice: unitPrice,
+                    subtotal: subtotal
+                });
+            }
+        });
+
+        // ==========================================
+        // เริ่มบันทึกลง Database
+        // ==========================================
+        db.serialize(() => {
+            // ตาราง orders: เพิ่มคอลัมน์ created_at และใส่เวลาไทย (ใช้ 'รอจัดเตรียม' แทน เพื่อเลี่ยงสระ ำ)
+            db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, 'รอจัดเตรียม', ?)`, 
+                [orderId, userId, totalAmount, now], function(err) {
+                if (err) {
+                    console.error("Error inserting orders:", err);
+                    return res.status(500).send("บันทึกออเดอร์ไม่สำเร็จ");
+                }
+
+                // ตาราง order_detail: บันทึกรายการสินค้าแต่ละชิ้น
+                const stmt = db.prepare(`INSERT INTO order_detail (order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, ?, ?, ?)`);
+                orderDetails.forEach(detail => {
+                    stmt.run(orderId, detail.productId, detail.quantity, detail.unitPrice, detail.subtotal);
+                });
+                stmt.finalize();
+
+                // ตาราง payment: เพิ่มคอลัมน์ paid_at และใส่เวลาไทย
+                db.run(`INSERT INTO payment (order_id, payment_method, amount, paid_at) VALUES (?, ?, ?, ?)`, 
+                    [orderId, paymentMethod, totalAmount, now], function(err) {
+                    if (err) {
+                        console.error("Error inserting payment:", err);
+                        return res.status(500).send("บันทึกการชำระเงินไม่สำเร็จ");
+                    }
+
+                    // เมื่อบันทึกสำเร็จทั้งหมด ให้ลบ Cookie ตะกร้าสินค้าออก
+                    res.clearCookie('cart');
+                    
+                    // เปลี่ยนหน้าไปยังหน้ารายการสั่งซื้อของพนักงาน
+                    return res.send(`
+                      <script>
+                        alert('ซื้อสินค้าเสร็จสิ้น');
+                        window.location.href = '/service/home';
+                      </script>
+                    `);
+                });
+            });
+        });
+    });
 });
 
 //SERVICE BUYING HISTORY(ALL)
