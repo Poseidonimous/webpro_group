@@ -30,45 +30,18 @@
                                     <th>รวม</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <!-- ใช้ ID cart-tbody สำหรับใช้วาดข้อมูลจาก JavaScript -->
+                            <tbody id="cart-tbody">
                                 <tr>
-                                    <td>Test</td>
-                                    <td>Test</td>
-                                    <td>
-                                        <div class="qty-control">
-                                            <div class="qty-btn_wrapper">
-                                                <button type="button" class="qty-btn">-</button>
-                                            </div>
-                                            <span class="qty-val">1</span>
-                                            <div class="qty-btn_wrapper">
-                                                <button type="button" class="qty-btn">+</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Test</td>
-                                </tr>
-                                <tr>
-                                    <td>Test</td>
-                                    <td>Test</td>
-                                    <td>
-                                        <div class="qty-control">
-                                            <div class="qty-btn_wrapper">
-                                                <button type="button" class="qty-btn">-</button>
-                                            </div>
-                                            <span class="qty-val">1</span>
-                                            <div class="qty-btn_wrapper">
-                                                <button type="button" class="qty-btn">+</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Test</td>
+                                    <td colspan="4" style="text-align:center; padding: 20px;">กำลังโหลดรายการสินค้า...</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="line"></div>
                         <div class="total">
                             <p class="title">ยอดรวม</p>
-                            <p class="price">55.00 บาท</p>
+                            <!-- แสดงยอดรวมทั้งหมด -->
+                            <p class="price" id="grand-total">0.00 บาท</p>
                         </div>
                     </div>
                 </div>
@@ -79,7 +52,8 @@
                     <div class="inside">
                         <p class="title">เลือกช่องทางการจ่ายเงิน</p>
                         <div class="pay_method">
-                            <form action="/payment" medthod="post">
+                            <!-- ฟอร์มจะส่งแค่ payment_method ส่วนสินค้าจะถูกส่งไปพร้อมกับ Cookie อัตโนมัติ -->
+                            <form action="/cart_payment" method="post">
                                 <div class="medthod_warpper">
                                     <label class="method">
                                         <input type="radio" name="payment_method" value="promptpay" id="prompt-pay" checked>
@@ -101,19 +75,48 @@
                                     </label>
                                     <p>เงินสด</p>
                                 </div>
+                                <div class="btn">
+                                    <button type="submit">ยืนยันการจ่ายเงิน</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="btn">
-                            <a href="#">
-                                <button>ยืนยันการจ่ายเงิน ํ</button>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-        <script>
+    </main>
+
+    <script>
+        let allProducts = []; // สำหรับเก็บข้อมูลสินค้าจาก API
+
+        // ==========================================
+        // ส่วนจัดการ Cookie
+        // ==========================================
+        function getCartCookie() {
+            const name = "cart=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(name) === 0) {
+                    try {
+                        return JSON.parse(c.substring(name.length, c.length));
+                    } catch (e) {
+                        return [];
+                    }
+                }
+            }
+            return [];
+        }
+
+        function setCartCookie(cartData) {
+            const jsonString = encodeURIComponent(JSON.stringify(cartData));
+            document.cookie = `cart=${jsonString}; path=/; max-age=86400`;
+        }
+        // ==========================================
+
+        // เล่นวิดีโอพื้นหลังอัตโนมัติ
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.getElementById("bg-video");
             if (video) {
@@ -121,7 +124,105 @@
                     console.log("Autoplay was prevented, retrying...", error);
                 });
             }
+            // โหลดข้อมูลตะกร้าสินค้าตอนเปิดหน้าเว็บ
+            loadCart();
         });
+
+        // ฟังก์ชันอ่านข้อมูลตะกร้า (เปลี่ยนมาอ่านจาก Cookie)
+        function getCart() {
+            return getCartCookie();
+        }
+
+        // ฟังก์ชันบันทึกข้อมูลตะกร้า (เปลี่ยนมาเซฟลง Cookie)
+        function saveCart(cart) {
+            setCartCookie(cart);
+        }
+
+        // ฟังก์ชันดึงข้อมูลสินค้าทั้งหมดเพื่อหาชื่อและราคามาแมตช์กับ ID ในตะกร้า
+        function loadCart() {
+            fetch('/api/products?category=all')
+                .then(res => {
+                    if (!res.ok) throw new Error("ไม่สามารถโหลดข้อมูลสินค้าได้");
+                    return res.json();
+                })
+                .then(products => {
+                    allProducts = products;
+                    renderCartTable();
+                })
+                .catch(err => {
+                    console.error("Error fetching products:", err);
+                    const tbody = document.getElementById('cart-tbody');
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding: 20px;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                });
+        }
+
+        // ฟังก์ชันวาดตารางสินค้าและคำนวณราคารวม
+        function renderCartTable() {
+            const cart = getCart();
+            const tbody = document.getElementById('cart-tbody');
+            const grandTotalEl = document.getElementById('grand-total');
+
+            tbody.innerHTML = '';
+            let grandTotal = 0;
+
+            // ถ้าไม่มีสินค้าในตะกร้า
+            if (!cart || cart.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">ไม่มีสินค้าในรถเข็น</td></tr>';
+                grandTotalEl.textContent = '0.00 บาท';
+                return;
+            }
+
+            // วนลูปสินค้าแต่ละรายการในตะกร้า
+            cart.forEach(item => {
+                // ค้นหาสินค้าจาก ID ที่ตรงกัน
+                const p = allProducts.find(prod => (prod.id || prod.product_id) == item.product_id);
+                if (!p) return; // หากไม่พบสินค้า
+
+                const unitPrice = Number(p.price) || 0;
+                const itemTotal = unitPrice * item.quantity;
+                grandTotal += itemTotal;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.name || p.product_name}</td>
+                    <td>${unitPrice.toFixed(2)}</td>
+                    <td>
+                        <div class="qty-control">
+                            <div class="qty-btn_wrapper">
+                                <button type="button" class="qty-btn" onclick="changeQty(${item.product_id}, -1)">-</button>
+                            </div>
+                            <span class="qty-val">${item.quantity}</span>
+                            <div class="qty-btn_wrapper">
+                                <button type="button" class="qty-btn" onclick="changeQty(${item.product_id}, 1)">+</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${itemTotal.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // อัปเดตยอดรวมทั้งหมด (.toFixed(2) เพื่อให้เป็นทศนิยม 2 ตำแหน่งเสมอ)
+            grandTotalEl.textContent = `${grandTotal.toFixed(2)} บาท`;
+        }
+
+        // ฟังก์ชันเพิ่ม-ลดจำนวนสินค้า
+        function changeQty(productId, delta) {
+            let cart = getCart();
+            const itemIndex = cart.findIndex(item => item.product_id == productId);
+
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity += delta;
+
+                // ถ้าน้อยกว่าหรือเท่ากับ 0 ให้ลบสินค้านั้นออกจากตะกร้า
+                if (cart[itemIndex].quantity <= 0) {
+                    cart.splice(itemIndex, 1);
+                }
+
+                saveCart(cart);
+                renderCartTable(); // วาดตารางและคำนวณราคารวมใหม่ทันที
+            }
+        }
     </script>
 </body>
 </html>

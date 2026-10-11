@@ -271,7 +271,7 @@ nav a:hover {
 }
 
 .category label:has(input:checked) {
-    background-color: #5B8C3A;
+    background-color: #6b9a45;
     color: #f3f3f3;
 }
 
@@ -390,7 +390,7 @@ nav a:hover {
 }
 
 .shadow {
-    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(6px 6px 0px #847e75);
 }
 
 .item {
@@ -420,21 +420,84 @@ nav a:hover {
 }
 
 .product_name {
-    font-size: 42px;
-    margin-top: 10px;
+    font-size: 40px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+    min-height: 75px;  
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail {
+    background-color: #d2d9df;
+    width: 100%;
+}
+
+.foot {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 12px;
+    padding-bottom: 12px;
 }
 
 .product_price {
     margin-top: 5px;
     font-size: 38px;
-    color: var(--mc-redstone-red);
+    color: #B3261E;
 }
 
-.detail {
-    background-color: #d4d4d4;
-    width: 100%;
+.button_shadow {
+    filter: drop-shadow(3px 3px 0px #9A5D08);
+    transition: all 0.35s ease;
 }
 
+.button_shadow:hover {
+    transform: translateY(-3px); 
+    filter: drop-shadow(4px 5px 0px #9A5D08);
+}
+
+.cart_button {
+    font-size: 30px;
+    padding: 5px 10px;
+    background-color: #e89c0ef0;
+    color: rgb(240, 240, 240);
+    cursor: pointer;
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+/* คลาสสำหรับสั่งให้ปุ่มเด้งตอนกดใส่ตะกร้า */
+.cart-pop-anim {
+    animation: cartPop 0.65s ease;
+}
+
+/* ตั้งค่าเฟรมอนิเมชัน: เริ่มต้น -> เด้งขึ้น(50%) -> กลับที่เดิม(100%) */
+@keyframes cartPop {
+    0% { 
+        transform: translateY(0); 
+        filter: drop-shadow(4px 4px 0px #9A5D08); 
+    }
+    50% { 
+        transform: translateY(-6px) scale(1.05); /* เด้งขึ้นและขยายขนาดนิดหน่อยให้ดูมีมิติ */
+        filter: drop-shadow(4px 10px 0px #9A5D08); 
+    }
+    100% { 
+        transform: translateY(0); 
+        filter: drop-shadow(4px 4px 0px #9A5D08); 
+    }
+}
 /* --------------------------------------------------- */
 /* ------------- Responsive Media Queries ------------ */
 /* --------------------------------------------------- */

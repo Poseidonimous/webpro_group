@@ -483,12 +483,12 @@ thead th:last-child {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 /* ตัวเลขแสดงจำนวนสินค้า */
 .qty-val {
-    font-size: 28px;
+    font-size: 38px;
     min-width: 30px;
     text-align: center;
     color: #333333;
