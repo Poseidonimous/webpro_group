@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History</title>
+    <link rel="stylesheet" href="/css/orders.css">
+    <link rel="icon" type="image/png" href="/image/icon.png">
+</head>
+<body>
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="/video/minecraft_chill_cp.mp4" type="video/mp4">
+    </video>
+    <main>
+        <nav>
+            <a href="/chef/home">หน้าหลัก</a>
+            <p>รายการสั่งอาหาร</p>
+        </nav>
+        <div class="main_tab">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รายการ</th>
+                        <th>เวลา</th>
+                        <th>วันที่</th>
+                        <th>ช่องทางการจ่ายเงิน</th>
+                        <th>ยอดรวม</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (history && history.length > 0) {%>
+                        <% history.forEach(function(item) {%>
+                            <tr>
+                                <td> <%= item.order_id %> </td>
+                                <td> <%= new Date(item.created_at).toLocaleTimeString('th-TH') %> </td>
+                                <td> <%= new Date(item.created_at).toLocaleDateString('th-TH') %> </td>
+                                <td> <%= item.payment_method %> </td>
+                                <td> <%= item.total_amount %> </td>
+                                <td> <%= item.order_status %> </td>
+                                <td> <a href="/chef/order/<%= item.order_id %>" class= "detail"><div><button>รายละเอียด</button></div></a> </td>
+                        <% }); %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

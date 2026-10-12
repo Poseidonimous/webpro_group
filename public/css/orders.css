@@ -1,0 +1,412 @@
+:root {
+    /* --- Greens --- */
+    --mc-grass-green: #577E35;
+    --mc-dark-green: #3B5323;
+    --mc-lime-green: #70B237;
+    --mc-moss-green: #4A5D23;
+    --mc-emerald-green: #17DD62;
+    --mc-slime-green: #8CD249;
+
+    /* --- Browns & Woods --- */
+    --mc-dirt-brown: #513720;
+    --mc-coarse-dirt: #77553B;
+    --mc-oak-wood: #A07248;
+    --mc-spruce-wood: #684E32;
+    --mc-birch-wood: #D7C185;
+    --mc-dark-oak: #3C2712;
+    --mc-acacia-wood: #AD5D32;
+    --mc-jungle-wood: #B8815B;
+    --mc-mangrove-wood: #762B2A;
+    --mc-cherry-pink: #E39DAE;
+
+    /* --- Stones & Grays --- */
+    --mc-stone-gray: #737373;
+    --mc-cobblestone-gray: #5A5A5A;
+    --mc-andesite-gray: #88888B;
+    --mc-deepslate-dark: #363639;
+    --mc-bedrock-black: #242424;
+    --mc-obsidian-purple: #1A1625;
+
+    /* --- Ores & Minerals --- */
+    --mc-diamond-cyan: #4AEDD9;
+    --mc-gold-yellow: #FCA800;
+    --mc-iron-gray: #D8D8D8;
+    --mc-redstone-red: #E62E2E;
+    --mc-lapis-blue: #1855B5;
+    --mc-amethyst-purple: #8A66D3;
+    --mc-copper-orange: #C66E50;
+    --mc-netherite-dark: #4C4143;
+
+    /* --- Nether, End & Elements --- */
+    --mc-netherrack-red: #6F3636;
+    --mc-soul-sand-brown: #493A32;
+    --mc-glowstone-yellow: #FFBC5B;
+    --mc-lava-orange: #D85311;
+    --mc-water-blue: #3F76E4;
+    --mc-quartz-white: #EAE5DE;
+    --mc-endstone-yellow: #DFE1A6;
+    --mc-portal-purple: #4A0E4E;
+
+    /* --- UI & Neutrals --- */
+    --mc-gui-light-gray: #C6C6C6;
+    --mc-gui-dark-gray: #373737;
+    --mc-gui-slot-gray: #8B8B8B;
+    --mc-shadow-black: rgba(0, 0, 0, 0.6);
+    --mc-pure-white: #FFFFFF;
+    --mc-pure-black: #000000;
+
+    /* --- Sculk, Ancient & Deep Dark --- */
+    --mc-sculk-dark: #09181E;
+    --mc-sculk-cyan: #00A3A8;
+    --mc-sculk-teal: #005B60;
+    --mc-sculk-vein: #198083;
+    --mc-echo-shard: #006F80;
+    --mc-warden-blue: #0F3C46;
+
+    /* --- Pale Garden & New Woods --- */
+    --mc-pale-oak-wood: #E0D9CE;
+    --mc-pale-moss-green: #909E83;
+    --mc-pale-bark-gray: #6B635A;
+    --mc-creaking-orange: #E66C15;
+
+    /* --- Copper States (ระดับสนิมทองแดง) --- */
+    --mc-copper-block: #C66E50;
+    --mc-exposed-copper: #A2806D;
+    --mc-weathered-copper: #5A9C86;
+    --mc-oxidized-copper: #43A387;
+
+    /* --- Ocean, Prismarine & Underwater --- */
+    --mc-prismarine-teal: #5BA89D;
+    --mc-prismarine-dark: #33534B;
+    --mc-prismarine-brick: #63988E;
+    --mc-sea-lantern-cyan: #9DCFC4;
+    --mc-sea-foam-white: #E4F6F3;
+    --mc-conduit-blue: #61C5D0;
+
+    /* --- Nether Warped & Crimson Woods --- */
+    --mc-crimson-stem-red: #7B2333;
+    --mc-crimson-hyphae: #5C1926;
+    --mc-warped-stem-teal: #2B686B;
+    --mc-warped-nylium: #167E7D;
+    --mc-shroomlight-orange: #F69140;
+
+    /* --- Magic, Enchanting & Special Items --- */
+    --mc-enchant-purple: #4F265D;
+    --mc-enchant-glow: #9955FF;
+    --mc-totem-gold: #E0B33A;
+    --mc-dragon-egg-black: #120B16;
+    --mc-nether-star-cyan: #E0FFFF;
+    --mc-beacon-sky-blue: #A2DDF1;
+
+    /* --- HUD, Status Effects & UI Elements --- */
+    --mc-heart-red: #FF1111;
+    --mc-hardcore-heart: #990000;
+    --mc-wither-heart-black: #211B1B;
+    --mc-poison-heart-green: #40A000;
+    --mc-absorption-gold: #FFD700;
+    --mc-hunger-drumstick: #80562D;
+    --mc-armor-icon-gray: #9DA0A8;
+    --mc-xp-bar-green: #80FF20;
+    --mc-tooltip-bg: #100010;
+    --mc-tooltip-border: #2B0B5A;
+
+    /* --- Dyes, Concrete & Blocks --- */
+    --mc-honey-yellow: #EB9B09;
+    --mc-sponge-yellow: #C3C340;
+    --mc-terracotta-brown: #985E43;
+    --mc-pink-wool: #ED8DAC;
+    --mc-magenta-wool: #BD3BBE;
+    --mc-purple-wool: #7A2AAC;
+    --mc-cyan-wool: #158991;
+    --mc-light-blue-wool: #3AB3DA;
+    --mc-froglight-green: #A7E39D;
+    --mc-froglight-pink: #E5C2D5;
+}
+
+@font-face {
+    font-family: 'iannnnnAMD';
+    src: url('/fonts/iannnnnAMD.ttf') format('truetype');
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'iannnnnAMD', sans-serif;
+    /* บังคับปิดการเกลี่ยขอบตัวอักษรเพื่อรักษาความคมของ Pixel */
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+    background-color: #000000;
+}
+
+input, button {
+    font-family: 'iannnnnAMD', sans-serif;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+}
+
+#bg-video {
+    position: fixed; /* ให้อยู่กับที่เวลาเลื่อนหน้าจอ */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* บังคับให้วิดีโอขยายเต็มจอโดยไม่เสียสัดส่วน */
+    z-index: -1; /* ดันไปอยู่เลเยอร์หลังสุด */
+    opacity: 0.88; /* ปรับให้วิดีโอมืดลงนิดหน่อยได้ */
+}
+
+/* body {
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                url('path-to-your-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+} */
+
+nav{
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    position: relative;
+    min-height: 60px;
+}
+
+nav p{
+    color: #ffffffee;
+    font-size: 44px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    white-space: nowrap;
+    text-shadow: 
+        3px 0px 0 rgb(69, 69, 69),
+        1px 3px 0 rgb(69, 69, 69);
+}
+
+
+nav a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 32px;
+    transition: color 0.265s ease-in-out;
+    padding-left: 5px;
+}
+
+nav a:hover {
+    color: var(--mc-redstone-red);
+}
+
+.main_tab {
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.5));
+    margin-left: 5vw;
+    margin-top: 20px;
+    width: 90vw;
+}
+
+.main_tab table {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-collapse: collapse;
+    width: 100%;
+    white-space: nowrap;
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.main_tab thead {
+    width: 100%;
+    font-size: 42px;
+    color: rgb(239, 239, 239);
+    text-shadow: 
+        3px 0px 0 rgb(81, 81, 81),
+        1px 3px 0 rgb(81, 81, 81);
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.main_tab th {
+    background-color: #d7900b;
+    padding: 5px;
+    box-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, 0.33);
+}
+
+.main_tab thead th:last-child {
+    box-shadow: inset -5px -5px 0 0 rgba(0, 0, 0, 0.33);
+}
+
+.main_tab tbody {
+    width: 100%;
+    font-size: 36px;
+    color: var(--mc-bedrock-black);
+}
+
+.main_tab th:nth-child(1) {
+    text-align: start;
+    padding-left: 20px;
+    width: 18%;
+}
+
+.main_tab td:nth-child(1) {
+    text-align: start;
+    padding-left: 18px;
+    width: 18%;
+}
+
+.main_tab th:nth-child(2) {
+    text-align: start;
+    width: 15%;
+}
+
+.main_tab td:nth-child(2) {
+    text-align: start;
+    padding-left: 5px;
+    width: 15%;
+}
+
+.main_tab th:nth-child(3) {
+    text-align: start;
+    width: 13%;
+}
+
+.main_tab td:nth-child(3) {
+    text-align: start;
+    padding-left: 5px;
+    width: 13%;
+}
+
+.main_tab th:nth-child(4), td:nth-child(4) {
+    text-align: center;
+    width: 13%;
+}
+
+.main_tab th:nth-child(5), td:nth-child(5) {
+    text-align: center;
+    width: 13%;
+}
+
+.main_tab th:nth-child(6), td:nth-child(6) {
+    text-align: center;
+    width: 13%;
+}
+
+.main_tab th:nth-child(7), td:nth-child(7) {
+    text-align: center;
+    width: 18%;
+}
+
+.main_tab td {
+    padding: 5px 0;
+}
+
+.detail div{
+    filter: drop-shadow(4px 4px 0px #9A5D08);
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.detail div:hover {
+    transform: translateY(-4px); 
+    filter: drop-shadow(4px 8px 0px #9A5D08);
+}
+
+.detail button {
+    padding: 2px 6px;
+    font-size: 30px;
+    background-color: #e3970a;
+    color: rgb(245, 245, 245);
+
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.main_tab tbody tr:nth-child(odd) {
+    background-color: rgba(224, 223, 223, 0.5);
+}
+
+.main_tab tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* --------------------------------------------------- */
+/* ------------- Responsive Media Queries ------------ */
+/* --------------------------------------------------- */
+
+/* สำหรับหน้าจอขนาดกลางและแท็บเล็ต (Tablet - Max Width: 992px) */
+@media screen and (max-width: 992px) {
+    nav p {
+        font-size: 36px;
+    }
+
+    nav a {
+        font-size: 26px;
+    }
+
+    .main_tab {
+        width: 95vw;
+        margin-left: 2.5vw;
+    }
+
+    .main_tab thead {
+        font-size: 32px;
+    }
+
+    .main_tab tbody {
+        font-size: 28px;
+    }
+}
+
+/* สำหรับสมาร์ทโฟนและหน้าจอขนาดเล็ก (Mobile - Max Width: 600px) */
+@media screen and (max-width: 600px) {
+    nav p {
+        font-size: 26px;
+        white-space: normal;
+        text-align: center;
+        width: 60%; /* ป้องกันข้อความซ้อนทับกับปุ่มย้อนกลับ */
+    }
+
+    nav a {
+        font-size: 22px;
+    }
+
+    /* ปรับให้กรอบตารางสามารถไถซ้าย-ขวาได้เมื่อหน้าจอแคบ */
+    .main_tab {
+        width: 95vw;
+        margin-left: 2.5vw;
+        overflow-x: auto; /* เพิ่มแถบเลื่อนแนวนอน */
+        clip-path: none; /* เอาการตัดขอบหยักของกล่องนอกออกชั่วคราว เพื่อไม่ให้ตัดโดน Scrollbar */
+    }
+
+    .main_tab table {
+        min-width: 650px; /* บังคับความกว้างขั้นต่ำของตาราง เพื่อไม่ให้คอลัมน์บีบตัวหนังสือจนเละ */
+    }
+
+    .main_tab thead {
+        font-size: 24px;
+    }
+
+    .main_tab tbody {
+        font-size: 20px;
+    }
+
+    /* ลดระยะห่างซ้ายมือของคอลัมน์แรกในจอมือถือ */
+    .main_tab th:nth-child(1), 
+    .main_tab td:nth-child(1) {
+        padding-left: 10px;
+    }
+}

@@ -726,16 +726,108 @@ app.get("/chef/home", (req, res) => {
   });
 });
 
-app.get("/chef/orders", (req, res) => {
-  res.render('chef/order');
-});
-
-app.get("/chef/orders/:id", (req, res) => {
-  res.render('chef/detail');
-});
-
 app.get("/chef/history", (req, res) => {
-  res.render('chef/history');
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `chef`) {
+    return res.redirect("/");
+  }
+
+  const sql = `
+  SELECT o.order_id, o.created_at, o.total_amount, o.order_status, p.payment_method
+  FROM orders o
+  LEFT JOIN payment p ON o.order_id = p.order_id
+  WHERE o.order_status <> "รอจัดเตรียม"
+  ORDER BY o.order_id DESC
+  `;
+  db.all(sql, function(err, data) {
+    if(err){
+      console.log(err);
+    }
+    res.render('chef/history', {history:data});
+  });
+});
+
+app.get("/chef/orders", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `chef`) {
+    return res.redirect("/");
+  }
+
+  const sql = `
+  SELECT o.order_id, o.created_at, o.total_amount, o.order_status, p.payment_method
+  FROM orders o
+  LEFT JOIN payment p ON o.order_id = p.order_id
+  WHERE o.order_status = "รอจัดเตรียม"
+  ORDER BY o.order_id DESC
+  `;
+  db.all(sql, function(err, data) {
+    if(err){
+      console.log(err);
+    }
+    res.render('chef/orders', {history:data});
+  });
+});
+
+app.get("/chef/order/:id", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/");
+  }
+
+  if (req.session.role !== `chef`) {
+    return res.redirect("/");
+  }
+
+  const order_id = req.params.id; 
+  // 1. เพิ่ม d.order_id เข้าไปใน SELECT
+  const sql = `
+    SELECT d.order_id, p.name, d.unit_price, d.quantity, d.subtotal, o.total_amount
+    FROM order_detail d
+    LEFT JOIN product p ON d.product_id = p.product_id
+    INNER JOIN orders o ON d.order_id = o.order_id
+    WHERE d.order_id = ?
+  `;
+  
+  db.all(sql, [order_id], function(err, menu) { 
+    if(err) {
+      console.log("SQL Error:", err);
+      return res.status(500).send("Database error");
+    }
+    
+    // 2. เปลี่ยนชื่อ Property เป็น 'menu' เพื่อให้ตรงกับไฟล์ detail.ejs ที่รอรับอยู่
+    res.render('chef/detail', { menu: menu });
+  });
+});
+
+app.post("/adjust_order", (req, res) => {
+    const order_id = req.body.order_id;
+    const new_status = req.body.chef_gived_status; // 'เสร็จสิ้น' หรือ 'ยกเลิก'
+
+    if (!order_id || !new_status) {
+        return res.status(400).send("ข้อมูลไม่ครบถ้วน");
+    }
+
+    const sql = `UPDATE orders SET order_status = ? WHERE order_id = ?`;
+    
+    db.run(sql, [new_status, order_id], function(err) {
+        if (err) {
+            console.error("Update Status Error:", err);
+            return res.status(500).send("เกิดข้อผิดพลาดในการอัปเดตสถานะ");
+        }
+        
+        // อัปเดตสำเร็จ ให้กลับไปหน้าแสดงรายการออเดอร์ทั้งหมดของเชฟ
+        return res.send(`
+          <script>
+            alert('เปลี่ยนสถานะเสร็จสิ้น');
+            window.location.href = '/chef/orders';
+          </script>
+        `);
+  });
 });
 
 app.listen(port, () => {
