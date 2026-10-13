@@ -284,9 +284,9 @@ http://localhost:3000
 
 | 🧑 สมาชิก | 🎭 หน้าที่ | 🔗 GitHub |
 |:--|:--|:--|
-| ชื่อ-นามสกุล | Frontend / UI | [@Poseidonimous](https://github.com/Poseidonimous) |
-| ชื่อ-นามสกุล | Backend / Database | [@Poseidonimous](https://github.com/Poseidonimous) |
-| ชื่อ-นามสกุล | Design / Documentation | [@Poseidonimous](https://github.com/Poseidonimous) |
+| ชวัลวิทย์ | Frontend / UI | [@Poseidonimous](https://github.com/Poseidonimous) |
+| ชวัลวิทย์ | Backend / Database | [@Poseidonimous](https://github.com/Poseidonimous) |
+| ชวัลวิทย์ | Design / Documentation | [@Poseidonimous](https://github.com/Poseidonimous) |
 
 
 <br/>
