@@ -285,10 +285,9 @@ http://localhost:3000
 | 🧑 สมาชิก | 🎭 หน้าที่ | 🔗 GitHub |
 |:--|:--|:--|
 | ชื่อ-นามสกุล | Frontend / UI | [@Poseidonimous](https://github.com/Poseidonimous) |
-| ชื่อ-นามสกุล | Backend / Database | [@username](https://github.com/username) |
-| ชื่อ-นามสกุล | Design / Documentation | [@username](https://github.com/username) |
+| ชื่อ-นามสกุล | Backend / Database | [@Poseidonimous](https://github.com/Poseidonimous) |
+| ชื่อ-นามสกุล | Design / Documentation | [@Poseidonimous](https://github.com/Poseidonimous) |
 
-> ✏️ แก้ชื่อ หน้าที่ และลิงก์ GitHub ให้ตรงกับสมาชิกในกลุ่มได้เลย
 
 <br/>
 
