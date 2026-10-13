@@ -282,11 +282,11 @@ http://localhost:3000
 <a id="team"></a>
 ## 👥 Party Members — ทีมผู้พัฒนา
 
-| 🧑 สมาชิก | 🎭 หน้าที่ | 🔗 GitHub |
+| 🧑 ผู้จัดทำ | 🎭 หน้าที่ | 🔗 GitHub |
 |:--|:--|:--|
-| ชวัลวิทย์ | Frontend / UI | [@Poseidonimous](https://github.com/Poseidonimous) |
-| ชวัลวิทย์ | Backend / Database | [@Poseidonimous](https://github.com/Poseidonimous) |
-| ชวัลวิทย์ | Design / Documentation | [@Poseidonimous](https://github.com/Poseidonimous) |
+| Chawanwit Thanaton | Frontend / UI | [@Poseidonimous](https://github.com/Poseidonimous) |
+| Chawanwit Thanaton | Backend / Database | [@Poseidonimous](https://github.com/Poseidonimous) |
+| Chawanwit Thanaton | Design / Documentation | [@Poseidonimous](https://github.com/Poseidonimous) |
 
 
 <br/>
