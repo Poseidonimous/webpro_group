@@ -500,3 +500,150 @@ thead th:last-child {
         gap: 30px;
     }
 }
+
+/* ==========================================
+   ปรับแต่งสำหรับหน้าจอมือถือ (Mobile Screens <= 600px)
+   ========================================== */
+@media screen and (max-width: 600px) {
+    /* --- Navigation Bar --- */
+    nav {
+        padding: 10px 12px;
+        min-height: 50px;
+    }
+
+    nav p {
+        font-size: 20px; /* ย่อขนาดคำว่า "รายละเอียดการสั่งซื้อ" ไม่ให้ทับปุ่มย้อนกลับ */
+        width: 55%;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    nav a {
+        font-size: 20px; /* ย่อปุ่มย้อนกลับ */
+        padding-left: 0;
+    }
+
+    /* --- โครงสร้างกล่องหลัก --- */
+    .main_div {
+        margin-top: 10px;
+        gap: 15px;
+    }
+
+    .top, .bottom {
+        width: 94vw; /* ขยายกล่องสรุปรายการให้กว้างเต็มตาบนมือถือ */
+    }
+
+    .inside {
+        padding: 14px 14px; /* ลด Padding ด้านข้างเพื่อเพิ่มพื้นที่ตาราง */
+    }
+
+    .title {
+        font-size: 30px; /* ย่อขนาดหัวข้อ "สรุปรายการสั่งซื้อ" และ "เลือกสถานะออเดอร์" */
+        text-shadow: 2px 0px 0 rgb(51, 51, 51), 1px 2px 0 rgb(51, 51, 51);
+    }
+
+    /* --- ตารางสรุปรายการอาหาร (Table) --- */
+    .top table {
+        margin-top: 8px;
+        margin-bottom: 15px;
+    }
+
+    .top th {
+        font-size: 18px;
+        padding: 6px 2px;
+        text-shadow: 1px 1px 0 rgb(63, 63, 63);
+    }
+
+    /* ปรับสัดส่วนคอลัมน์ไม่ให้ตารางล้นออกนอกจอ */
+    .top th:nth-child(1), .top td:nth-child(1) {
+        width: 40%;
+        padding-left: 4px;
+    }
+
+    .top th:nth-child(2), .top td:nth-child(2) {
+        width: 22%;
+        padding-right: 2px;
+        text-align: center;
+    }
+
+    .top th:nth-child(3), .top td:nth-child(3) {
+        width: 16%;
+        text-align: center;
+    }
+
+    .top th:nth-child(4), .top td:nth-child(4) {
+        width: 22%;
+        padding-right: 4px;
+        text-align: end;
+    }
+
+    .top td {
+        font-size: 18px; /* ย่อขนาดตัวหนังสือชื่ออาหารและราคา */
+        padding: 8px 2px;
+    }
+
+    /* --- ยอดรวม (Total) --- */
+    .total {
+        margin-top: 10px;
+        justify-content: space-between;
+    }
+
+    .total .title {
+        font-size: 26px;
+    }
+
+    .price {
+        position: static; /* ปลดล็อก absolute เพื่อไม่ให้ทับกับคำว่า "ยอดรวม" */
+        font-size: 26px;
+    }
+
+    /* --- ตัวเลือกสถานะออเดอร์ (เสร็จสิ้น / ยกเลิก) --- */
+    .pay_method {
+        margin-top: 15px;
+        margin-bottom: 65px; /* เพิ่มพื้นที่เว้นด้านล่างสำหรับปุ่มยืนยัน */
+    }
+
+    .pay_method form {
+        flex-direction: row; /* จัดกล่องเสร็จสิ้นและยกเลิกไว้คู่กันแนวนอน */
+        justify-content: space-evenly;
+        gap: 10px;
+    }
+
+    .card_box {
+        width: 110px; /* ปรับย่อขนาดกล่อง Diamond / Redstone */
+        height: 110px;
+    }
+
+    .medthod_warpper p {
+        font-size: 22px;
+        margin-top: 4px;
+    }
+
+    /* --- ปุ่มยืนยันสถานะออเดอร์ --- */
+    .btn {
+        position: absolute;
+        left: 50%;
+        right: auto;
+        bottom: 12px;
+        transform: translateX(-50%);
+        width: 90%;
+        text-align: center;
+    }
+
+    .btn button {
+        width: 100%;
+        font-size: 22px;
+        padding: 8px 10px;
+    }
+
+    /* แก้ปัญหาปุ่มกระโดดไปทางขวาเมื่อแตะ/ชี้ (Hover/Touch) บนจอมือถือ */
+    .btn:hover {
+        filter: drop-shadow(4px 8px 0px #9A5D08);
+        transform: translateX(-50%) translateY(-4px);
+    }
+
+    .btn:active {
+        transform: translateX(-50%) translateY(0px);
+    }
+}

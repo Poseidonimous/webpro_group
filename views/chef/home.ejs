@@ -8,12 +8,12 @@
     <link rel="icon" type="image/png" href="/image/icon.png">
 </head>
 <body>
-    <video autoplay loop muted playsinline id="bg-video">
+    <video autoplay loop muted playsinline id="bg-video" preload="metadata">
         <source src="/video/minecraft_cherry_cp.mp4" type="video/mp4">
     </video>
     <main>
         <nav>
-            <a href="/">ออกจากระบบ</a>
+            <a href="/" onclick="sessionStorage.removeItem('homeAnimated')">ออกจากระบบ</a>
             <p>หน้าหลัก</p>
         </nav>
 
@@ -22,8 +22,7 @@
                 <div class="name">
                     <p>สวัสดี</p><p class="user_name"> <%= user_name %> </p>
                 </div>
-                <p class="remain">เวลาคงเหลือ</p>
-                <p class="time">01 : 30 : 23</p>
+                <p class="remain">เลือกรายการที่ต้องการ</p>
             </div>
             <div class="card_div">
                 <a href="/chef/orders" class="card">
@@ -51,6 +50,16 @@
                 video.play().catch(error => {
                     console.log("Autoplay was prevented, retrying...", error);
                 });
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // เช็คว่าเคยแสดงอนิเมชันในรอบการใช้งานนี้หรือยัง
+            if (!sessionStorage.getItem("homeAnimated")) {
+                // หากยังไม่เคย ให้ใส่คลาส first-load เพื่อเล่นอนิเมชัน
+                document.body.classList.add("first-load");
+                // บันทึกค่าไว้ว่าเล่นอนิเมชันเรียบร้อยแล้ว
+                sessionStorage.setItem("homeAnimated", "true");
             }
         });
     </script>

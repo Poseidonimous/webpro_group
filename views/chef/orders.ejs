@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="/image/icon.png">
 </head>
 <body>
-    <video autoplay loop muted playsinline id="bg-video">
+    <video autoplay loop muted playsinline id="bg-video" preload="metadata">
         <source src="/video/minecraft_chill_cp.mp4" type="video/mp4">
     </video>
     <main>
@@ -54,7 +54,55 @@
                     console.log("Autoplay was prevented, retrying...", error);
                 });
             }
+
+            // สั่งให้ดึงข้อมูลออเดอร์ใหม่ทุกๆ 5 วินาที (5000 มิลลิวินาที)
+            setInterval(fetchNewOrders, 5000);
         });
+
+        // ฟังก์ชันดึงข้อมูลแบบไม่รีเฟรชหน้า
+        function fetchNewOrders() {
+            fetch('/api/chef/orders')
+                .then(response => {
+                    if (!response.ok) throw new Error("ไม่สามารถเชื่อมต่อข้อมูลได้");
+                    return response.json();
+                })
+                .then(data => {
+                    // หาตาราง tbody
+                    const tbody = document.querySelector('tbody');
+                    tbody.innerHTML = ''; // ล้างข้อมูลตารางเดิมออก
+
+                    // ถ้ามีออเดอร์
+                    if (data && data.length > 0) {
+                        data.forEach(item => {
+                            // แปลงวันที่และเวลาให้เหมือน EJS เดิม
+                            const dateObj = new Date(item.created_at);
+                            const timeStr = dateObj.toLocaleTimeString('th-TH');
+                            const dateStr = dateObj.toLocaleDateString('th-TH');
+                            const payMethod = item.payment_method || '-';
+
+                            // สร้างแถว (Row) ใหม่
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${item.order_id}</td>
+                                <td>${timeStr}</td>
+                                <td>${dateStr}</td>
+                                <td>${payMethod}</td>
+                                <td>${item.total_amount}</td>
+                                <td>${item.order_status}</td>
+                                <td>
+                                    <a href="/chef/order/${item.order_id}" class="detail">
+                                        <div><button>รายละเอียด</button></div>
+                                    </a>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } 
+                })
+                .catch(err => {
+                    console.error("Error fetching orders:", err);
+                });
+        }
     </script>
 </body>
 </html>

@@ -561,3 +561,160 @@ thead th:last-child {
         gap: 30px;
     }
 }
+
+/* ==========================================
+   ปรับแต่งสำหรับหน้าจอมือถือ (Mobile Screens <= 600px)
+   ========================================== */
+@media screen and (max-width: 600px) {
+    /* --- Navigation Bar --- */
+    nav {
+        padding: 10px 12px;
+        min-height: 50px;
+    }
+
+    nav p {
+        font-size: 26px; /* ย่อขนาดคำว่า "รถเข็น" ไม่ให้เกยปุ่มย้อนกลับ */
+    }
+
+    nav a {
+        font-size: 20px; /* ย่อขนาดปุ่ม "ย้อนกลับ" */
+        padding-left: 0;
+    }
+
+    /* --- โครงสร้างกล่องหลัก --- */
+    .main_div {
+        margin-top: 10px;
+        gap: 15px;
+    }
+
+    .top, .bottom {
+        width: 94vw; /* ขยายความกว้างกล่องสรุปรายการให้เต็มตาบนจอมือถือ */
+    }
+
+    .inside {
+        padding: 14px 14px; /* ลด Padding ด้านข้างเพื่อเพิ่มพื้นที่แสดงตาราง */
+    }
+
+    .title {
+        font-size: 32px; /* ย่อขนาดหัวข้อ "สรุปรายการสั่งซื้อ" และ "เลือกช่องทางการจ่ายเงิน" */
+        text-shadow: 2px 0px 0 rgb(51, 51, 51), 1px 2px 0 rgb(51, 51, 51);
+    }
+
+    /* --- ตารางสินค้า (Table) บนมือถือ --- */
+    .top table {
+        margin-top: 8px;
+        margin-bottom: 15px;
+    }
+
+    .top th {
+        font-size: 18px;
+        padding: 6px 2px;
+        text-shadow: 1px 1px 0 rgb(63, 63, 63);
+    }
+
+    /* ปรับระยะและขนาดคอลัมน์ให้อยู่ในหน้าจอโดยไม่ล้นออกข้าง */
+    .top th:nth-child(1), .top td:nth-child(1) {
+        width: 38%;
+        padding-left: 4px;
+    }
+
+    .top th:nth-child(2), .top td:nth-child(2) {
+        width: 20%;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .top th:nth-child(3), .top td:nth-child(3) {
+        width: 22%;
+    }
+
+    .top th:nth-child(4), .top td:nth-child(4) {
+        width: 20%;
+        padding-right: 8px;
+    }
+
+    .top td {
+        font-size: 18px; /* ย่อชื่อสินค้าและราคาในตาราง */
+        padding: 8px 2px;
+    }
+
+    /* --- ปุ่มเพิ่ม-ลดจำนวนสินค้า (+ / -) --- */
+    .qty-control {
+        gap: 4px;
+    }
+
+    .qty-val {
+        font-size: 18px;
+        min-width: 18px;
+    }
+
+    .qty-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 18px;
+    }
+
+    /* --- สรุปยอดรวม (Total) --- */
+    .total {
+        margin-top: 10px;
+        justify-content: space-between;
+    }
+
+    .total .title {
+        font-size: 28px;
+    }
+
+    .price {
+        position: static; /* ปลดล็อก absolute เพื่อไม่ให้ตัวเลขราคาทับกับคำว่า "ยอดรวม" */
+        font-size: 28px;
+    }
+
+    /* --- ช่องทางชำระเงิน (Payment Methods) --- */
+    .pay_method {
+        margin-top: 15px;
+        margin-bottom: 65px; /* เพิ่มพื้นที่เว้นด้านล่างสำหรับปุ่มยืนยัน */
+    }
+
+    .pay_method form {
+        flex-direction: row; /* จัดกล่องพร้อมเพย์และเงินสดไว้คู่กันแนวนอน */
+        justify-content: space-evenly;
+        gap: 10px;
+    }
+
+    .card_box {
+        width: 110px; /* ปรับย่อกล่องไอเทม Diamond / Emerald ให้พอดีจอมือถือ */
+        height: 110px;
+    }
+
+    .medthod_warpper p {
+        font-size: 22px;
+        margin-top: 4px;
+    }
+
+    /* --- ปุ่มยืนยันการจ่ายเงิน --- */
+    .btn {
+        position: absolute;
+        left: 50%;
+        right: auto;
+        bottom: 12px;
+        transform: translateX(-50%);
+        width: 90%;
+        text-align: center;
+    }
+
+    .btn button {
+        width: 100%;
+        font-size: 24px;
+        padding: 8px 10px;
+    }
+
+    .btn:hover {
+        filter: drop-shadow(4px 8px 0px #9A5D08);
+        transform: translateX(-50%) translateY(-4px); /* เพิ่ม translateX(-50%) เข้ามาตรงนี้ */
+    }
+
+    /* แนะนำเพิ่ม :active สำหรับการแตะบนจอมือถือ */
+    .btn:active {
+        transform: translateX(-50%) translateY(0px);
+    }
+}

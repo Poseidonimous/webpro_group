@@ -343,4 +343,150 @@ input, button {
     }
 }
 
-/* test change */
+/* ==========================================
+   ปรับแต่งสำหรับหน้าจอมือถือ (Mobile Screens <= 600px)
+   ========================================== */
+@media screen and (max-width: 600px) {
+    .login_main {
+        padding: 20px 14px; /* เพิ่มระยะเว้นรอบนอก ไม่ให้กล่องฟอร์มชนขอบจอโทรศัพท์ */
+    }
+
+    .login_main h1 {
+        font-size: 36px; /* ปรับขนาดหัวข้อให้พอดีกับจอมือถือขนาดเล็ก ไม่ล้นบรรทัด */
+        margin-bottom: 12px;
+    }
+
+    .form-wrapper,
+    .form {
+        max-width: 100%;
+        padding: 24px 20px; /* ลด Padding แนวนอนจากเดิม 50px เหลือ 20px เพื่อเพิ่มพื้นที่พิมพ์บนจอมือถือ */
+    }
+
+    .div_input {
+        margin-top: 12px;
+        margin-bottom: 6px;
+    }
+
+    .div_input label {
+        font-size: 20px; /* ปรับขนาดตัวอักษร Label ให้พอดีตา */
+        margin-bottom: 4px;
+    }
+
+    .div_input input {
+        font-size: 20px;
+        height: 42px;
+        padding: 0 12px;
+    }
+
+    .regis_div {
+        font-size: 18px;
+        margin-top: 8px;
+    }
+
+    .login_button {
+        margin-top: 20px;
+    }
+
+    .login_button button {
+        font-size: 22px;
+        height: 46px;
+    }
+
+    /* เพิ่ม Response ตอนเอานิ้วแตะปุ่ม/ช่องพิมพ์ (Touch Feedback) สำหรับมือถือ */
+    .div_input input:active,
+    .login_button button:active {
+        transform: scale(0.98);
+    }
+}
+
+/* ==========================================
+   อนิเมชันเปิดหน้าจอแรกเข้า (Entry Animations)
+   ========================================== */
+
+/* Keyframes ของ Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn_bg {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.95;
+    }
+}
+
+/* Keyframes ของกล่องป็อปขึ้นมาสไตล์พิกเซล */
+@keyframes formPopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(30px);
+    }
+    70% {
+        transform: scale(1.02) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Keyframes ขององค์ประกอบย่อยสไลด์ขึ้น */
+@keyframes itemSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 1. วิดีโอพื้นหลัง */
+#bg-video {
+    opacity: 0;
+    animation: fadeIn_bg 1s ease-in-out forwards;
+}
+
+/* 2. กล่องฟอร์มหลัก */
+.form {
+    opacity: 0;
+    animation: formPopIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+/* 3. หัวข้อ h1 */
+.form h1 {
+    opacity: 0;
+    animation: itemSlideUp 0.5s ease-out 0.4s forwards;
+}
+
+/* 4. ช่องกรอกข้อมูล (.div_input) ทยอยปรากฏทีละช่อง */
+.div_input {
+    opacity: 0;
+    animation: itemSlideUp 0.5s ease-out forwards;
+}
+
+/* ตั้งเวลารอไล่คิวของแต่ละช่อง (รองรับทั้ง Login และ Register) */
+.div_input:nth-of-type(1) { animation-delay: 0.5s; }
+.div_input:nth-of-type(2) { animation-delay: 0.6s; }
+.div_input:nth-of-type(3) { animation-delay: 0.7s; }
+.div_input:nth-of-type(4) { animation-delay: 0.8s; }
+
+/* 5. ข้อความสลับหน้า */
+.regis_div {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out 0.85s forwards;
+}
+
+/* 6. ปุ่มกด Submit */
+.login_button {
+    opacity: 0;
+    animation: itemSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.95s forwards;
+}

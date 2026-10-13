@@ -603,4 +603,8 @@ nav a:hover {
     .catelog_div form {
         margin-left: 10px;
     }
+
+    .big_warpper {
+        padding-bottom: 40px;
+    }
 }

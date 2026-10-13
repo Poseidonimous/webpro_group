@@ -503,4 +503,8 @@ main {
 
         margin-top: 50px;
     }
+
+    .tab {
+        padding-bottom: 30px;
+    }
 }

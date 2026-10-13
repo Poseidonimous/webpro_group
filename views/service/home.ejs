@@ -8,12 +8,12 @@
     <link rel="icon" type="image/png" href="/image/icon.png">
 </head>
 <body>
-    <video autoplay loop muted playsinline id="bg-video">
+    <video autoplay loop muted playsinline id="bg-video" preload="metadata">
         <source src="/video/minecraft_cherry_cp.mp4" type="video/mp4">
     </video>
     <main>
         <nav>
-            <a href="/">ออกจากระบบ</a>
+            <a href="/" onclick="sessionStorage.removeItem('homeAnimated')">ออกจากระบบ</a>
             <p>หน้าหลัก</p>
         </nav>
 
@@ -22,8 +22,7 @@
                 <div class="name">
                     <p>สวัสดี</p><p class="user_name"> <%= user_name %> </p>
                 </div>
-                <p class="remain">เวลาคงเหลือ</p>
-                <p class="time">01 : 30 : 23</p>
+                <p class="remain">เลือกรายการที่ต้องการ</p>
             </div>
             <div class="card_div">
                 <a href="/service/order" class="card">
@@ -53,6 +52,49 @@
                 });
             }
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // เช็คว่าเคยแสดงอนิเมชันในรอบการใช้งานนี้หรือยัง
+            if (!sessionStorage.getItem("homeAnimated")) {
+                // หากยังไม่เคย ให้ใส่คลาส first-load เพื่อเล่นอนิเมชัน
+                document.body.classList.add("first-load");
+                // บันทึกค่าไว้ว่าเล่นอนิเมชันเรียบร้อยแล้ว
+                sessionStorage.setItem("homeAnimated", "true");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // เริ่มทำงานคอยเช็คสถานะออเดอร์ทุกๆ 5 วินาที
+            setInterval(checkOrderStatus, 5000);
+        });
+
+        function checkOrderStatus() {
+            fetch('/api/customer/my-orders')
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(orders => {
+                    // อ่านรายการออเดอร์ที่เคยแจ้งเตือนไปแล้วจาก localStorage
+                    let notifiedOrders = JSON.parse(localStorage.getItem('notified_canceled_orders') || '[]');
+
+                    orders.forEach(order => {
+                        // ถ้าออเดอร์ถูกเปลี่ยนเป็น "ยกเลิก" และยังไม่เคยแจ้งเตือนลูกค้ารายนี้มาก่อน
+                        if (order.order_status === 'ยกเลิก' && !notifiedOrders.includes(order.order_id)) {
+                            
+                            // แสดงป๊อปอัปแจ้งเตือนลูกค้า
+                            alert(`ออเดอร์หมายเลข ${order.order_id} ถูกยกเลิกโดยห้องครัว`);
+
+                            // บันทึก order_id นี้เก็บไว้เพื่อไม่ให้แจ้งเตือนซ้ำอีกในรอบถัดไป
+                            notifiedOrders.push(order.order_id);
+                            localStorage.setItem('notified_canceled_orders', JSON.stringify(notifiedOrders));
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.error("Error checking order status:", err);
+                });
+        }
     </script>
 </body>
 </html>

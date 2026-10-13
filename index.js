@@ -262,7 +262,7 @@ app.post("/payment", (req,res) => {
   const order_id = 'ORD' + Date.now();
   const user_id = req.session.user_id;
   
-  // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+  //ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
   const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
 
   const price_sql = `SELECT * FROM product WHERE product_id = ? AND is_active = 1`;
@@ -501,6 +501,31 @@ app.get("/customer/history", (req, res) => {
     }
     res.render('customer/history', {history:data});
   });
+});
+
+// API สำหรับลูกค้าเช็คสถานะออเดอร์ของตัวเอง
+app.get("/api/customer/my-orders", (req, res) => {
+    if (!req.session.user_id) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const userId = req.session.user_id;
+    // ดึงออเดอร์ของลูกค้ารายนี้
+    const sql = `
+        SELECT order_id, order_status, total_amount, created_at 
+        FROM orders 
+        WHERE user_id = ? 
+        ORDER BY created_at DESC 
+        LIMIT 10
+    `;
+
+    db.all(sql, [userId], (err, orders) => {
+        if (err) {
+            console.error("Fetch customer orders error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(orders || []);
+    });
 });
 
 
@@ -771,6 +796,30 @@ app.get("/chef/orders", (req, res) => {
       console.log(err);
     }
     res.render('chef/orders', {history:data});
+  });
+});
+
+app.get("/api/chef/orders", (req, res) => {
+  // ตรวจสอบสิทธิ์ (ถ้าไม่ใช่เชฟ จะส่งกลับเป็น Error ป้องกันคนนอกดึงข้อมูล)
+  if (!req.session.user_id || req.session.role !== 'chef') {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const sql = `
+  SELECT o.order_id, o.created_at, o.total_amount, o.order_status, p.payment_method
+  FROM orders o
+  LEFT JOIN payment p ON o.order_id = p.order_id
+  WHERE o.order_status = "รอจัดเตรียม"
+  ORDER BY o.order_id DESC
+  `;
+  
+  db.all(sql, function(err, data) {
+    if(err){
+      console.log(err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    // ส่งข้อมูลกลับไปเป็น JSON
+    res.json(data);
   });
 });
 
