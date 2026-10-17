@@ -1,0 +1,227 @@
+:root {
+    /* --- Minecraft Palette --- */
+    --mc-lime-green: #70B237;
+    --mc-dark-green: #3B5323;
+    --mc-redstone-red: #E62E2E;
+    --mc-gold-yellow: #FCA800;
+    --mc-emerald-green: #17DD62;
+    --mc-bedrock-black: #242424;
+    --mc-gui-slot-gray: #8B8B8B;
+}
+
+@font-face {
+    font-family: 'iannnnnAMD';
+    src: url('/fonts/iannnnnAMD.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'iannnnnAMD', sans-serif;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+}
+
+/* --- วิดีโอพื้นหลัง --- */
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.9;
+}
+
+/* --- Navigation Bar --- */
+nav {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    position: relative;
+    min-height: 60px;
+}
+
+nav p {
+    color: #ffffff;
+    font-size: 44px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    white-space: nowrap;
+    text-shadow: 3px 0px 0 rgb(69, 69, 69), 1px 3px 0 rgb(69, 69, 69);
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 32px;
+    transition: color 0.25s ease-in-out;
+    padding-left: 10px;
+}
+
+nav a:hover {
+    color: var(--mc-redstone-red);
+}
+
+/* --- จัดวางการ์ดให้อยู่กึ่งกลางหน้าจอ --- */
+.main_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+}
+
+.package_card_wrapper {
+    width: 100%;
+    max-width: 500px;
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.5));
+}
+
+.inside {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.inside .title {
+    font-size: 74px;
+    color: rgba(255, 255, 255);
+    text-shadow: 
+        3px 0px 0 rgb(51, 51, 51),
+        1px 3px 0 rgb(51, 51, 51);
+    margin-bottom: 10px;
+}
+
+.line {
+    width: 100%;
+    height: 4px;
+    background-color: rgb(78, 78, 78);
+    margin-bottom: 20px;
+}
+
+/* --- ส่วน QR Code และยอดเงิน --- */
+.qr_and_total {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.qr_box {
+    background-color: #ffffff;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.qr_img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.total {
+    text-align: center;
+}
+
+.total_title {
+    font-size: 48px;
+    color: rgba(255, 255, 255);
+    text-shadow: 
+        3px 0px 0 rgb(51, 51, 51),
+        1px 3px 0 rgb(51, 51, 51);
+}
+
+.price {
+    font-size: 48px;
+    color: var(--mc-gold-yellow);
+    text-shadow: 2px 2px 0px #000;
+}
+
+/* --- ปุ่มกดสไตล์ Minecraft --- */
+.confirm_form {
+    width: 100%;
+}
+
+.button_div {
+    filter: drop-shadow(4px 4px 0px #9A5D08);
+    transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.confirm_btn {
+    cursor: pointer;
+    width: 100%;
+    height: 52px;
+    background-color: #E8920F;
+    color: rgb(255, 255, 255);
+    font-size: 42px;
+    font-family: 'iannnnnAMD', sans-serif;
+    text-shadow: 
+        3px 0px 0 rgb(51, 51, 51),
+        1px 3px 0 rgb(51, 51, 51);
+    border: none;
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+}
+
+.button_div:hover {
+    filter: drop-shadow(4px 8px 0px #9A5D08);
+    transform: translateY(-4px);
+}
+
+.confirm_btn:active {
+    transform: scale(0.98);
+}
+
+/* --- Responsive บนสมาร์ทโฟน --- */
+@media screen and (max-width: 600px) {
+    nav p {
+        font-size: 28px;
+    }
+    nav a {
+        font-size: 26px;
+    }
+    .inside {
+        padding: 20px;
+    }
+    .inside .title {
+        font-size: 42px;
+    }
+    .qr_img {
+        width: 160px;
+        height: 160px;
+    }
+    .price {
+        font-size: 34px;
+    }
+    .confirm_btn {
+        font-size: 28px;
+        height: 46px;
+    }
+}

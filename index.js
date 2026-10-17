@@ -57,6 +57,197 @@ function getRemainingSeconds(req, user) {
   return remainingSeconds;
 }
 
+// ==========================================
+// Helper: การชำระเงิน (ใช้ร่วมกันระหว่าง payment / cart / prompt-pay)
+// ==========================================
+const PROMPTPAY = 'พร้อมเพย์';
+
+// เช็คว่าวิธีชำระเงินที่ส่งมาคือ "พร้อมเพย์" หรือไม่
+function isPromptPay(method) {
+  const m = String(method || '').toLowerCase().replace(/[\s_-]/g, '');
+  return m.includes('พร้อมเพย์') || m.includes('promptpay');
+}
+
+// อ่านตะกร้าจาก Cookie
+function readCart(req) {
+  if (!req.cookies.cart) return [];
+  try {
+    const cart = JSON.parse(req.cookies.cart);
+    return Array.isArray(cart) ? cart : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+// คำนวณยอดรวมของตะกร้าจากราคาใน Database (ไม่เชื่อราคาจากฝั่ง client)
+function calcCartTotal(cart, callback) {
+  const ids = cart.map(item => parseInt(item.product_id, 10)).filter(Number.isInteger);
+  if (ids.length === 0) return callback(null, 0, []);
+
+  const placeholders = ids.map(() => '?').join(',');
+  db.all(`SELECT product_id, price FROM product WHERE product_id IN (${placeholders})`, ids, (err, products) => {
+    if (err) return callback(err);
+
+    let totalAmount = 0;
+    const orderDetails = [];
+
+    cart.forEach(item => {
+      const product = products.find(p => p.product_id == item.product_id);
+      const quantity = parseInt(item.quantity, 10);
+      if (product && quantity > 0) {
+        const subtotal = product.price * quantity;
+        totalAmount += subtotal;
+        orderDetails.push({
+          productId: item.product_id,
+          quantity: quantity,
+          unitPrice: product.price,
+          subtotal: subtotal
+        });
+      }
+    });
+
+    callback(null, totalAmount, orderDetails);
+  });
+}
+
+// บันทึกการซื้อแพ็กเกจเวลา (customer)
+function processPackagePayment(req, res, pay_method) {
+  const package = req.session.package;
+  const order_id = 'ORD' + Date.now();
+  const user_id = req.session.user_id;
+
+  //ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+  const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
+
+  const price_sql = `SELECT * FROM product WHERE product_id = ? AND is_active = 1`;
+  db.get(price_sql, [package], function(err, product) {
+    if(err || !product) {
+      console.log(err);
+      return res.redirect("/customer/buy_time");
+    }
+    const order_sql = `INSERT INTO orders(order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, ?, ?)`;
+    db.run(order_sql, [order_id, user_id, product.price, 'เสร็จสิ้น', now], function(error) {
+      if(error) {
+        console.log(error);
+        return res.redirect("/customer/buy_time");
+      }
+
+      const payment_sql = `INSERT INTO payment(order_id, payment_method, amount, paid_at) VALUES(?, ?, ?, ?)`;
+      db.run(payment_sql, [order_id, pay_method, product.price, now], function(err) {
+        if(err) {
+          console.log(err);
+          return res.redirect("/customer/buy_time");
+        }
+
+        const detail_sql = `INSERT INTO order_detail(order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, 1, ?, ?)`;
+        db.run(detail_sql, [order_id, product.product_id, product.price, product.price], function(err) {
+          if(err) {
+            console.log(err);
+            return res.redirect("/customer/buy_time");
+          }
+
+          const add_time_sql = `UPDATE user SET remaining_time_minute = remaining_time_minute + ? WHERE user_id = ?`;
+          const timeMap = { 1: 30, 2: 60, 3: 90, 4: 120, 5: 150, 6: 180 };
+          const minutesToAdd = timeMap[product.product_id] || 0;
+
+          if (minutesToAdd === 0) {
+            console.log("ไม่พบแพ็กเกจเวลาสำหรับ product_id:", product.product_id);
+            return res.status(400).send("แพ็กเกจเวลาไม่ถูกต้อง");
+          }
+
+          db.run(add_time_sql, [minutesToAdd, user_id], function(err) {
+            if(err) {
+              console.log(err);
+              return res.redirect("/customer/buy_time");
+            }
+            console.log(`USER : ${user_id} has Buy time for ${minutesToAdd} minute Successfully`);
+
+            delete req.session.package;
+            delete req.session.session_end_time;
+            delete req.session.pending_payment;
+
+            return res.send(`
+              <script>
+                alert('ซื้อเวลาเสร็จสิ้น');
+                window.location.href = '/customer/home';
+              </script>
+            `);
+          });
+        });
+      });
+    });
+  });
+}
+
+// บันทึกการซื้อสินค้าในตะกร้า (customer และ service ใช้ร่วมกัน)
+// homeUrl = หน้าที่จะพากลับหลังซื้อเสร็จ เช่น '/customer/home' หรือ '/service/home'
+function processCartPayment(req, res, paymentMethod, homeUrl) {
+  const cart = readCart(req);
+
+  // ถ้าไม่มีของในตะกร้าให้เด้งกลับไปหน้าแรก
+  if (cart.length === 0) {
+    return res.redirect(homeUrl);
+  }
+
+  const userId = req.session.user_id || 1;
+  const orderId = "ORD" + Date.now();
+
+  // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
+  const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
+
+  calcCartTotal(cart, (err, totalAmount, orderDetails) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
+    }
+
+    if (orderDetails.length === 0) {
+      return res.redirect(homeUrl);
+    }
+
+    // ==========================================
+    // เริ่มบันทึกลง Database
+    // ==========================================
+    db.serialize(() => {
+      // ตาราง orders (ใช้ 'รอจัดเตรียม' แทน เพื่อเลี่ยงสระ ำ)
+      db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, 'รอจัดเตรียม', ?)`,
+        [orderId, userId, totalAmount, now], function(err) {
+        if (err) {
+          console.error("Error inserting orders:", err);
+          return res.status(500).send("บันทึกออเดอร์ไม่สำเร็จ");
+        }
+
+        // ตาราง order_detail: บันทึกรายการสินค้าแต่ละชิ้น
+        const stmt = db.prepare(`INSERT INTO order_detail (order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, ?, ?, ?)`);
+        orderDetails.forEach(detail => {
+          stmt.run(orderId, detail.productId, detail.quantity, detail.unitPrice, detail.subtotal);
+        });
+        stmt.finalize();
+
+        // ตาราง payment
+        db.run(`INSERT INTO payment (order_id, payment_method, amount, paid_at) VALUES (?, ?, ?, ?)`,
+          [orderId, paymentMethod, totalAmount, now], function(err) {
+          if (err) {
+            console.error("Error inserting payment:", err);
+            return res.status(500).send("บันทึกการชำระเงินไม่สำเร็จ");
+          }
+
+          // เมื่อบันทึกสำเร็จทั้งหมด ให้ลบ Cookie ตะกร้าสินค้าออก
+          res.clearCookie('cart');
+          delete req.session.pending_payment;
+
+          return res.send(`
+            <script>
+              alert('ซื้อสินค้าเสร็จสิ้น');
+              window.location.href = '${homeUrl}';
+            </script>
+          `);
+        });
+      });
+    });
+  });
+}
+
 //LOGIN and Give PATH and Session
 app.get("/", (req, res) => {
   res.render('login');
@@ -258,70 +449,18 @@ app.get("/customer/payment", (req,res)=>{
 //CUSTOMER PURCHASE A TIME
 app.post("/payment", (req,res) => {
   const pay_method = req.body.payment_method;
-  const package = req.session.package;
-  const order_id = 'ORD' + Date.now();
-  const user_id = req.session.user_id;
-  
-  //ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
-  const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
 
-  const price_sql = `SELECT * FROM product WHERE product_id = ? AND is_active = 1`;
-  db.get(price_sql, [package], function(err, product) {
-    if(err || !product) {
-      console.log(err);
+  // เลือกพร้อมเพย์ -> ไปหน้า /customer/prompt-pay ก่อน (ยังไม่บันทึกออเดอร์)
+  if (isPromptPay(pay_method)) {
+    if (!req.session.user_id || req.session.role !== `customer` || !req.session.package) {
       return res.redirect("/customer/buy_time");
     }
-    const order_sql = `INSERT INTO orders(order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, ?, ?)`;
-    db.run(order_sql, [order_id, user_id, product.price, 'เสร็จสิ้น', now], function(error) {
-      if(error) {
-        console.log(error);
-        return res.redirect("/customer/buy_time");
-      }
+    req.session.pending_payment = { role: 'customer', type: 'package' };
+    return res.redirect("/customer/prompt-pay");
+  }
 
-      const payment_sql = `INSERT INTO payment(order_id, payment_method, amount, paid_at) VALUES(?, ?, ?, ?)`;
-      db.run(payment_sql, [order_id, pay_method, product.price, now], function(err) {
-        if(err) {
-          console.log(err);
-          return res.redirect("/customer/buy_time");
-        }
-
-        const detail_sql = `INSERT INTO order_detail(order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, 1, ?, ?)`;
-        db.run(detail_sql, [order_id, product.product_id, product.price, product.price], function(err) {
-          if(err) {
-            console.log(err);
-            return res.redirect("/customer/buy_time");
-          }
-          
-          const add_time_sql = `UPDATE user SET remaining_time_minute = remaining_time_minute + ? WHERE user_id = ?`;
-          const timeMap = { 1: 30, 2: 60, 3: 90, 4: 120, 5: 150, 6: 180 };
-          const minutesToAdd = timeMap[product.product_id] || 0;
-
-          if (minutesToAdd === 0) {
-            console.log("ไม่พบแพ็กเกจเวลาสำหรับ product_id:", product.product_id);
-            return res.status(400).send("แพ็กเกจเวลาไม่ถูกต้อง");
-          }
-
-          db.run(add_time_sql, [minutesToAdd, user_id], function(err) {
-            if(err) {
-              console.log(err);
-              return res.redirect("/customer/buy_time");
-            }
-            console.log(`USER : ${user_id} has Buy time for ${minutesToAdd} minute Successfully`);
-
-            delete req.session.package;
-            delete req.session.session_end_time;
-
-            return res.send(`
-              <script>
-                alert('ซื้อเวลาเสร็จสิ้น');
-                window.location.href = '/customer/home';
-              </script>
-            `);
-          });
-        });
-      });
-    });
-  });
+  // วิธีอื่น บันทึกทันทีเหมือนเดิม
+  processPackagePayment(req, res, pay_method);
 });
 
 
@@ -378,102 +517,19 @@ app.get("/customer/cart", (req, res) => {
 
 //CUSTOMER PURCHASE IN CART
 app.post("/cart_payment", (req, res) => {
-    // 1. อ่านวิธีจ่ายเงินจาก Form
-    const paymentMethod = req.body.payment_method || 'พร้อมเพย์';
+  const paymentMethod = req.body.payment_method || PROMPTPAY;
 
-    // 2. อ่านข้อมูล Cart จาก Cookie
-    let cart = [];
-    if (req.cookies.cart) {
-        try {
-            cart = JSON.parse(req.cookies.cart);
-        } catch (e) {
-            cart = [];
-        }
+  // เลือกพร้อมเพย์ -> ไปหน้า /customer/prompt-pay ก่อน (ยังไม่บันทึกออเดอร์)
+  if (isPromptPay(paymentMethod)) {
+    if (readCart(req).length === 0) {
+      return res.redirect('/customer/home');
     }
+    req.session.pending_payment = { role: 'customer', type: 'cart' };
+    return res.redirect('/customer/prompt-pay');
+  }
 
-    // ถ้าไม่มีของในตะกร้าให้เด้งกลับไปหน้าแรก
-    if (cart.length === 0) {
-        return res.redirect('/customer/home');
-    }
-
-    // 3. กำหนดค่าตัวแปรเบื้องต้น
-    const userId = req.session.user_id || 1;
-    const orderId = "ORD" + Date.now();
-
-    // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
-    const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
-
-    // 4. ดึงราคาจาก Database เพื่อนำมาคำนวณ
-    const productIds = cart.map(item => item.product_id).join(',');
-    
-    // ค้นหาสินค้าทั้งหมดที่มีในตะกร้าจากตาราง product
-    db.all(`SELECT product_id, price FROM product WHERE product_id IN (${productIds})`, [], (err, products) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
-        }
-
-        let totalAmount = 0;
-        const orderDetails = [];
-
-        // คำนวณราคารวมและยอดแยกแต่ละชิ้น
-        cart.forEach(item => {
-            const product = products.find(p => p.product_id == item.product_id);
-            if (product) {
-                const unitPrice = product.price;
-                const subtotal = unitPrice * item.quantity;
-                totalAmount += subtotal;
-
-                orderDetails.push({
-                    productId: item.product_id,
-                    quantity: item.quantity,
-                    unitPrice: unitPrice,
-                    subtotal: subtotal
-                });
-            }
-        });
-
-        // ==========================================
-        // เริ่มบันทึกลง Database
-        // ==========================================
-        db.serialize(() => {
-            // ตาราง orders: เพิ่มคอลัมน์ created_at และใส่เวลาไทย (ใช้ 'รอจัดเตรียม' แทน เพื่อเลี่ยงสระ ำ)
-            db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, 'รอจัดเตรียม', ?)`, 
-                [orderId, userId, totalAmount, now], function(err) {
-                if (err) {
-                    console.error("Error inserting orders:", err);
-                    return res.status(500).send("บันทึกออเดอร์ไม่สำเร็จ");
-                }
-
-                // ตาราง order_detail: บันทึกรายการสินค้าแต่ละชิ้น
-                const stmt = db.prepare(`INSERT INTO order_detail (order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, ?, ?, ?)`);
-                orderDetails.forEach(detail => {
-                    stmt.run(orderId, detail.productId, detail.quantity, detail.unitPrice, detail.subtotal);
-                });
-                stmt.finalize();
-
-                // ตาราง payment: เพิ่มคอลัมน์ paid_at และใส่เวลาไทย
-                db.run(`INSERT INTO payment (order_id, payment_method, amount, paid_at) VALUES (?, ?, ?, ?)`, 
-                    [orderId, paymentMethod, totalAmount, now], function(err) {
-                    if (err) {
-                        console.error("Error inserting payment:", err);
-                        return res.status(500).send("บันทึกการชำระเงินไม่สำเร็จ");
-                    }
-
-                    // เมื่อบันทึกสำเร็จทั้งหมด ให้ลบ Cookie ตะกร้าสินค้าออก
-                    res.clearCookie('cart');
-                    
-                    // เปลี่ยนหน้าไปยังหน้ารายการสั่งซื้อของลูกค้า
-                    return res.send(`
-                      <script>
-                        alert('ซื้อสินค้าเสร็จสิ้น');
-                        window.location.href = '/customer/home';
-                      </script>
-                    `);
-                });
-            });
-        });
-    });
+  // วิธีอื่น บันทึกทันทีเหมือนเดิม
+  processCartPayment(req, res, paymentMethod, '/customer/home');
 });
 
 
@@ -605,102 +661,19 @@ app.get("/service/cart", (req, res) => {
 
 //SERVICE PURCHASE IN CART
 app.post("/service_cart_payment", (req, res) => {
-    // 1. อ่านวิธีจ่ายเงินจาก Form
-    const paymentMethod = req.body.payment_method || 'พร้อมเพย์';
+  const paymentMethod = req.body.payment_method || PROMPTPAY;
 
-    // 2. อ่านข้อมูล Cart จาก Cookie
-    let cart = [];
-    if (req.cookies.cart) {
-        try {
-            cart = JSON.parse(req.cookies.cart);
-        } catch (e) {
-            cart = [];
-        }
+  // เลือกพร้อมเพย์ -> ไปหน้า /service/prompt-pay ก่อน (ยังไม่บันทึกออเดอร์)
+  if (isPromptPay(paymentMethod)) {
+    if (readCart(req).length === 0) {
+      return res.redirect('/service/home');
     }
+    req.session.pending_payment = { role: 'service', type: 'cart' };
+    return res.redirect('/service/prompt-pay');
+  }
 
-    // ถ้าไม่มีของในตะกร้าให้เด้งกลับไปหน้าแรก
-    if (cart.length === 0) {
-        return res.redirect('/service/home');
-    }
-
-    // 3. กำหนดค่าตัวแปรเบื้องต้น
-    const userId = req.session.user_id || 1;
-    const orderId = "ORD" + Date.now();
-
-    // ⭐️ ดึงวันที่และเวลาปัจจุบันของประเทศไทย (UTC+7) ในฟอร์แมต YYYY-MM-DD HH:mm:ss
-    const now = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Bangkok" });
-
-    // 4. ดึงราคาจาก Database เพื่อนำมาคำนวณ
-    const productIds = cart.map(item => item.product_id).join(',');
-    
-    // ค้นหาสินค้าทั้งหมดที่มีในตะกร้าจากตาราง product
-    db.all(`SELECT product_id, price FROM product WHERE product_id IN (${productIds})`, [], (err, products) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
-        }
-
-        let totalAmount = 0;
-        const orderDetails = [];
-
-        // คำนวณราคารวมและยอดแยกแต่ละชิ้น
-        cart.forEach(item => {
-            const product = products.find(p => p.product_id == item.product_id);
-            if (product) {
-                const unitPrice = product.price;
-                const subtotal = unitPrice * item.quantity;
-                totalAmount += subtotal;
-
-                orderDetails.push({
-                    productId: item.product_id,
-                    quantity: item.quantity,
-                    unitPrice: unitPrice,
-                    subtotal: subtotal
-                });
-            }
-        });
-
-        // ==========================================
-        // เริ่มบันทึกลง Database
-        // ==========================================
-        db.serialize(() => {
-            // ตาราง orders: เพิ่มคอลัมน์ created_at และใส่เวลาไทย (ใช้ 'รอจัดเตรียม' แทน เพื่อเลี่ยงสระ ำ)
-            db.run(`INSERT INTO orders (order_id, user_id, total_amount, order_status, created_at) VALUES (?, ?, ?, 'รอจัดเตรียม', ?)`, 
-                [orderId, userId, totalAmount, now], function(err) {
-                if (err) {
-                    console.error("Error inserting orders:", err);
-                    return res.status(500).send("บันทึกออเดอร์ไม่สำเร็จ");
-                }
-
-                // ตาราง order_detail: บันทึกรายการสินค้าแต่ละชิ้น
-                const stmt = db.prepare(`INSERT INTO order_detail (order_id, product_id, quantity, unit_price, subtotal) VALUES (?, ?, ?, ?, ?)`);
-                orderDetails.forEach(detail => {
-                    stmt.run(orderId, detail.productId, detail.quantity, detail.unitPrice, detail.subtotal);
-                });
-                stmt.finalize();
-
-                // ตาราง payment: เพิ่มคอลัมน์ paid_at และใส่เวลาไทย
-                db.run(`INSERT INTO payment (order_id, payment_method, amount, paid_at) VALUES (?, ?, ?, ?)`, 
-                    [orderId, paymentMethod, totalAmount, now], function(err) {
-                    if (err) {
-                        console.error("Error inserting payment:", err);
-                        return res.status(500).send("บันทึกการชำระเงินไม่สำเร็จ");
-                    }
-
-                    // เมื่อบันทึกสำเร็จทั้งหมด ให้ลบ Cookie ตะกร้าสินค้าออก
-                    res.clearCookie('cart');
-                    
-                    // เปลี่ยนหน้าไปยังหน้ารายการสั่งซื้อของพนักงาน
-                    return res.send(`
-                      <script>
-                        alert('ซื้อสินค้าเสร็จสิ้น');
-                        window.location.href = '/service/home';
-                      </script>
-                    `);
-                });
-            });
-        });
-    });
+  // วิธีอื่น บันทึกทันทีเหมือนเดิม
+  processCartPayment(req, res, paymentMethod, '/service/home');
 });
 
 //SERVICE BUYING HISTORY(ALL)
@@ -878,6 +851,85 @@ app.post("/adjust_order", (req, res) => {
         `);
   });
 });
+
+// ==========================================
+// PROMPT-PAY (customer และ service ใช้ร่วมกัน)
+// ==========================================
+
+// หน้า QR พร้อมเพย์ + ยอดรวมของคำสั่งซื้อ
+function promptPayPage(role) {
+  return (req, res) => {
+    if (!req.session.user_id || req.session.role !== role) {
+      return res.redirect("/");
+    }
+
+    const pending = req.session.pending_payment;
+    if (!pending || pending.role !== role) {
+      return res.redirect(`/${role}/home`);
+    }
+
+    // ซื้อแพ็กเกจเวลา (customer) -> ยอดรวม = ราคาแพ็กเกจ
+    if (pending.type === 'package') {
+      const packageId = req.session.package;
+      if (!packageId) return res.redirect('/customer/buy_time');
+
+      return db.get(`SELECT price FROM product WHERE product_id = ? AND is_active = 1`, [packageId], (err, product) => {
+        if (err || !product) {
+          console.log(err);
+          return res.redirect('/customer/buy_time');
+        }
+        return res.render('prompt_pay', {
+          total: product.price,
+          backUrl: '/customer/payment',
+          confirmUrl: `/${role}/confirm-payment`
+        });
+      });
+    }
+
+    // ซื้อสินค้าในตะกร้า -> ยอดรวม = ผลรวมราคาสินค้าทุกชิ้น
+    const cart = readCart(req);
+    if (cart.length === 0) return res.redirect(`/${role}/home`);
+
+    calcCartTotal(cart, (err, totalAmount) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
+      }
+      if (totalAmount <= 0) return res.redirect(`/${role}/cart`);
+
+      return res.render('prompt_pay', {
+        total: totalAmount,
+        backUrl: `/${role}/cart`,
+        confirmUrl: `/${role}/confirm-payment`
+      });
+    });
+  };
+}
+
+// กดปุ่ม "ยืนยันการชำระเงิน" -> บันทึกออเดอร์ + payment ลง Database
+function confirmPromptPay(role) {
+  return (req, res) => {
+    if (!req.session.user_id || req.session.role !== role) {
+      return res.redirect("/");
+    }
+
+    const pending = req.session.pending_payment;
+    if (!pending || pending.role !== role) {
+      return res.redirect(`/${role}/home`);
+    }
+
+    if (pending.type === 'package') {
+      return processPackagePayment(req, res, PROMPTPAY);
+    }
+    return processCartPayment(req, res, PROMPTPAY, `/${role}/home`);
+  };
+}
+
+app.get("/customer/prompt-pay", promptPayPage('customer'));
+app.post("/customer/confirm-payment", confirmPromptPay('customer'));
+
+app.get("/service/prompt-pay", promptPayPage('service'));
+app.post("/service/confirm-payment", confirmPromptPay('service'));
 
 app.listen(port, () => {
   console.log(`Starting server at port ${port} link http://localhost:${port}`);

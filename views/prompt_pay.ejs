@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="/css/prompt_pay.css">
+    <link rel="icon" type="image/png" href="/image/icon.png">
+</head>
+<body>
+    <video autoplay loop muted playsinline id="bg-video" preload="metadata">
+        <source src="/video/minecraft_ocean_cp.mp4" type="video/mp4">
+    </video>
+    <main>
+        <nav>
+            <a href="<%= backUrl %>">ย้อนกลับ</a>
+            <p>จ่ายเงิน พร้อมเพย์</p>
+        </nav>
+
+        <div class="main_div">
+            <div class="package_card_wrapper">
+                <div class="top">
+                    <div class="inside">
+                        <p class="title">สรุปรายการสั่งซื้อ</p>
+                        <div class="line"></div>
+                        
+                        <div class="qr_and_total">
+                            <div class="qr_box">
+                                <img src="/image/QR.png" alt="QR-Prompt-pay" class="qr_img">
+                            </div>
+                            <div class="total">
+                                <p class="total_title">ยอดรวม</p>
+                                <p class="price"><%= Number(total).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> บาท</p>
+                            </div>
+                        </div>
+
+                        <form action="<%= confirmUrl %>" method="POST" class="confirm_form">
+                            <div class="button_div">
+                                <button type="submit" class="confirm_btn">ยืนยันการจ่ายเงิน</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("bg-video");
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, retrying...", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
