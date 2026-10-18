@@ -8,8 +8,10 @@
     "mysql2": "^3.24.2",
     "react": "^19.3.0",
     "sql2": "^0.0.1",
-    "sqlite3": "^6.0.1",
-    "start": "node index.js", 
+    "sqlite3": "^6.0.1"
+  },
+  "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
